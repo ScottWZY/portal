@@ -65,12 +65,25 @@ const sidebar = {
   '/spring-ecosystem/': [
     { text: 'Spring 生态', link: '/spring-ecosystem/' },
     {
+      text: 'Spring Framework 核心',
+      collapsed: false,
+      items: [
+        { text: 'IoC 与 Bean 生命周期', link: '/spring-ecosystem/spring-framework/ioc' },
+        { text: '依赖注入与循环依赖', link: '/spring-ecosystem/spring-framework/di-circular' },
+        { text: 'AOP 原理', link: '/spring-ecosystem/spring-framework/aop' },
+        { text: '事务管理', link: '/spring-ecosystem/spring-framework/transaction' },
+        { text: '事件机制', link: '/spring-ecosystem/spring-framework/event' },
+        { text: '扩展点全景', link: '/spring-ecosystem/spring-framework/extension' },
+      ]
+    },
+    {
       text: 'Spring Boot',
       collapsed: false,
       items: [
         { text: '自动配置原理', link: '/spring-ecosystem/spring-boot/' },
         { text: '启动流程', link: '/spring-ecosystem/spring-boot/startup' },
         { text: 'Starter 机制', link: '/spring-ecosystem/spring-boot/starter' },
+        { text: '监控与 Actuator', link: '/spring-ecosystem/spring-boot/actuator' },
       ]
     },
     {
@@ -82,6 +95,9 @@ const sidebar = {
         { text: '配置中心', link: '/spring-ecosystem/spring-cloud/config' },
         { text: '网关', link: '/spring-ecosystem/spring-cloud/gateway' },
         { text: '负载均衡', link: '/spring-ecosystem/spring-cloud/loadbalance' },
+        { text: 'OpenFeign 远程调用', link: '/spring-ecosystem/spring-cloud/openfeign' },
+        { text: 'Sentinel 熔断降级', link: '/spring-ecosystem/spring-cloud/sentinel' },
+        { text: 'Seata 分布式事务', link: '/spring-ecosystem/spring-cloud/seata' },
       ]
     },
     {
@@ -90,7 +106,25 @@ const sidebar = {
       items: [
         { text: '安全框架', link: '/spring-ecosystem/spring-security/' },
         { text: '认证与授权', link: '/spring-ecosystem/spring-security/auth' },
-        { text: 'OAuth2/JWT', link: '/spring-ecosystem/spring-security/oauth2' },
+        { text: 'OAuth2 / JWT', link: '/spring-ecosystem/spring-security/oauth2' },
+        { text: '安全漏洞防护', link: '/spring-ecosystem/spring-security/vulnerability' },
+      ]
+    },
+    {
+      text: 'Spring 设计模式',
+      collapsed: false,
+      items: [
+        { text: '设计模式全景', link: '/spring-ecosystem/spring-patterns/' },
+        { text: '代理·模板·观察者', link: '/spring-ecosystem/spring-patterns/proxy-template-observer' },
+        { text: '工厂·策略·责任链', link: '/spring-ecosystem/spring-patterns/factory-strategy-chain' },
+      ]
+    },
+    {
+      text: 'Spring 实战项目',
+      collapsed: false,
+      items: [
+        { text: '秒杀系统实战', link: '/spring-ecosystem/spring-projects/seckill' },
+        { text: '微服务架构实战', link: '/spring-ecosystem/spring-projects/microservice-project' },
       ]
     },
   ],
@@ -103,9 +137,36 @@ const sidebar = {
         { text: 'MySQL 核心', link: '/database/mysql/' },
         { text: '索引优化', link: '/database/mysql/index-optimization' },
         { text: 'SQL 优化', link: '/database/mysql/sql-optimization' },
-        { text: '事务与锁', link: '/database/mysql/transaction' },
+        { text: '事务与锁', link: '/database/mysql/transaction-locking' },
+        { text: '日志系统', link: '/database/mysql/logging-system' },
         { text: '分库分表', link: '/database/mysql/sharding' },
         { text: '主从复制', link: '/database/mysql/replication' },
+        { text: '选型指南', link: '/database/mysql/selection' },
+      ]
+    },
+    {
+      text: 'Oracle',
+      collapsed: false,
+      items: [
+        { text: 'Oracle 核心架构', link: '/database/oracle/' },
+        { text: '存储结构', link: '/database/oracle/storage' },
+        { text: '事务与锁', link: '/database/oracle/transaction' },
+        { text: '优化器与执行计划', link: '/database/oracle/optimizer' },
+        { text: '备份恢复', link: '/database/oracle/backup-recovery' },
+        { text: '性能调优', link: '/database/oracle/performance' },
+        { text: '选型指南', link: '/database/oracle/selection' },
+      ]
+    },
+    {
+      text: '国产数据库',
+      collapsed: false,
+      items: [
+        { text: '概览', link: '/database/domestic/' },
+        { text: 'OceanBase', link: '/database/domestic/oceanbase' },
+        { text: 'TiDB', link: '/database/domestic/tidb' },
+        { text: 'openGauss', link: '/database/domestic/opengauss' },
+        { text: '达梦 DM8', link: '/database/domestic/dameng' },
+        { text: '选型对比', link: '/database/domestic/selection' },
       ]
     },
     {
@@ -118,6 +179,31 @@ const sidebar = {
         { text: '分布式锁', link: '/database/redis/distributed-lock' },
         { text: '缓存策略', link: '/database/redis/cache-strategy' },
         { text: '集群方案', link: '/database/redis/cluster' },
+        { text: '选型指南', link: '/database/redis/selection' },
+      ]
+    },
+    {
+      text: 'Elasticsearch',
+      collapsed: false,
+      items: [
+        { text: 'ES 核心架构', link: '/database/elasticsearch/' },
+        { text: '倒排索引与分词', link: '/database/elasticsearch/inverted-index' },
+        { text: '查询与聚合', link: '/database/elasticsearch/dsl-query' },
+        { text: '集群架构', link: '/database/elasticsearch/cluster' },
+        { text: '性能优化', link: '/database/elasticsearch/performance' },
+        { text: '选型指南', link: '/database/elasticsearch/selection' },
+      ]
+    },
+    {
+      text: 'MongoDB',
+      collapsed: false,
+      items: [
+        { text: 'MongoDB 核心', link: '/database/mongodb/' },
+        { text: '文档模型设计', link: '/database/mongodb/data-model' },
+        { text: '查询与索引', link: '/database/mongodb/query-index' },
+        { text: '副本集与分片', link: '/database/mongodb/replication-sharding' },
+        { text: '事务支持', link: '/database/mongodb/transaction' },
+        { text: '选型指南', link: '/database/mongodb/selection' },
       ]
     },
   ],

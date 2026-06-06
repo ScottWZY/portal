@@ -2,51 +2,63 @@
 
 ## 模块概述
 
-数据库模块是后端开发者的必修课，覆盖 MySQL 原理与优化、Redis 数据结构与缓存策略，以及 Elasticsearch 搜索引擎。数据库知识的考察贯穿面试全程——从基础 SQL 能力到架构设计题，几乎每轮都会涉及。
+数据库模块是后端开发者的必修课，覆盖 **关系型数据库（MySQL、Oracle、国产数据库）**、**缓存数据库（Redis）**、**搜索引擎（Elasticsearch）** 以及 **文档数据库（MongoDB）**。数据库知识的考察贯穿面试全程——从基础 SQL 能力到架构设计题，几乎每轮都会涉及。
 
 ::: tip 学习目标
-从 CRUD 工程师进阶为能分析慢查询、设计高性能表结构、解决缓存一致性问题的专业开发者。
+从 CRUD 工程师进阶为能分析慢查询、设计高性能表结构、解决缓存一致性问题的专业开发者，并具备数据库选型决策能力。
 :::
 
 ::: info 关注层次
-应用层（SQL 优化 / 缓存设计） → 架构层（主从复制 / 分库分表） → 原理层（索引结构 / 存储引擎）
+应用层（SQL 优化 / 缓存设计） → 架构层（主从复制 / 分库分表 / 集群） → 原理层（索引结构 / 存储引擎 / 分布式协议）
 :::
 
-## 核心知识点
+## 六大板块概览
 
-### MySQL
+| 板块 | 类型 | 核心能力 | 面试权重 |
+|------|------|----------|----------|
+| [MySQL](./mysql/) | 关系型数据库 | 索引优化、SQL 调优、事务与锁、分库分表 | ⭐⭐⭐⭐⭐ |
+| [Oracle](./oracle/) | 关系型数据库 | 架构理解、CBO 优化器、RMAN 备份恢复、AWR 调优 | ⭐⭐⭐ |
+| [国产数据库](./domestic/) | 关系型/分布式 | OceanBase、TiDB、openGauss、达梦 DM8 架构与选型 | ⭐⭐⭐ |
+| [Redis](./redis/) | 缓存数据库 | 数据结构底层、缓存策略、分布式锁、集群方案 | ⭐⭐⭐⭐⭐ |
+| [Elasticsearch](./elasticsearch/) | 搜索引擎 | 倒排索引、DSL 查询、集群架构、性能优化 | ⭐⭐⭐ |
+| [MongoDB](./mongodb/) | 文档数据库 | 文档模型设计、副本集与分片、事务支持 | ⭐⭐ |
 
-| 子模块 | 核心内容 |
-|--------|----------|
-| 架构与存储引擎 | Server 层与存储引擎层分离架构、InnoDB vs MyISAM 对比、InnoDB 内存结构 |
-| 索引原理 | B+Tree 数据结构、聚簇索引 vs 非聚簇索引、覆盖索引、索引下推、前缀索引 |
-| 索引优化 | 最左前缀法则、索引失效场景 10 例、EXPLAIN 执行计划解读（type/rows/Extra） |
-| SQL 优化 | 慢查询定位（slow_query_log）、Profile 分析、Join 优化（NLJ/BNL/MRR/BKA） |
-| 事务与锁 | MVCC 原理（undo log + ReadView）、当前读 vs 快照读、行锁/间隙锁/临键锁 |
-| 日志系统 | redo log（崩溃恢复）、undo log（事务回滚/MVCC）、binlog（主从复制/数据恢复） |
-| 主从复制 | 异步/半同步/组复制对比、并行复制、GTID、读写分离中间件 |
-| 分库分表 | 垂直拆分 vs 水平拆分、ShardingSphere 实战、分片键选择、跨分片查询方案 |
+## 数据库选型速查
 
-### Redis
+```
+┌─────────────────────────────────────────────────────────────────┐
+│                    数据库选型决策矩阵                              │
+├──────────────┬────────────┬──────────┬──────────┬───────────────┤
+│   场景        │ 首选方案    │ 备选方案  │ 缓存层   │ 搜索层        │
+├──────────────┼────────────┼──────────┼──────────┼───────────────┤
+│ 电商交易系统  │ MySQL      │ TiDB     │ Redis    │ ES (商品搜索)  │
+│ 金融核心系统  │ Oracle     │ OceanBase│ Redis    │ -             │
+│ 内容管理 CMS  │ MongoDB    │ MySQL    │ Redis    │ ES (全文搜索)  │
+│ 日志分析平台  │ -          │ -        │ -        │ ES + Kibana   │
+│ 信创国产替代  │ 达梦/openGauss│ TiDB  │ Redis    │ ES            │
+│ 实时排行榜    │ Redis      │ -        │ Redis    │ -             │
+│ 物联网时序数据│ MongoDB    │ TDengine │ Redis    │ -             │
+│ 高并发缓存    │ Redis      │ -        │ Redis    │ -             │
+└──────────────┴────────────┴──────────┴──────────┴───────────────┘
+```
 
-| 子模块 | 核心内容 |
-|--------|----------|
-| 数据结构 | String/Hash/List/Set/ZSet 底层编码（SDS/ziplist/listpack/skiplist等） |
-| 高级数据类型 | Bitmap（签到）、HyperLogLog（UV 统计）、GEO（LBS）、Stream（消息队列） |
-| 持久化 | RDB（bgsave fork）vs AOF（fsync 策略）、混合持久化 |
-| 缓存策略 | 缓存穿透/击穿/雪崩解决方案、淘汰策略（LRU/LFU/TTL）、过期删除策略 |
-| 集群方案 | 主从 + Sentinel、Redis Cluster（16384 槽位、MOVED/ASK 重定向）、Codis |
-| 分布式锁 | SET NX EX + Lua 解锁、Redisson RedLock、看门狗续期机制 |
-| 缓存一致性 | Cache Aside 模式、延迟双删、Canal + MQ 异步更新 |
+## 学习路径总览
 
-### Elasticsearch
-
-| 子模块 | 核心内容 |
-|--------|----------|
-| 基础概念 | 索引/类型/文档/映射、倒排索引、分词器（IK Analyzer） |
-| 查询 DSL | Bool Query（must/filter/should/must_not）、聚合查询（Bucket/Metrics/Pipeline） |
-| 集群架构 | 分片与副本、Master 选举、脑裂问题、写入与查询流程 |
-| 性能优化 | 批量写入、查询缓存、Scroll/Scroll-After 深分页 |
+```mermaid
+graph LR
+    A[数据库基础] --> B[MySQL 深度掌握]
+    A --> C[Redis 核心掌握]
+    B --> D[Oracle 拓展]
+    B --> E[国产数据库了解]
+    C --> F[分布式缓存架构]
+    B --> G[Elasticsearch 搜索]
+    C --> H[MongoDB 文档存储]
+    D --> I[数据库综合选型]
+    E --> I
+    F --> I
+    G --> I
+    H --> I
+```
 
 ## 面试重点
 
@@ -57,6 +69,8 @@
 4. **分布式锁**：Redis 实现分布式锁的演进过程（单机 → RedLock → Redisson），生产环境注意事项
 5. **redo log 与 binlog 区别**：两阶段提交为什么需要？崩溃恢复流程是怎样的？
 6. **分库分表后如何查询**：跨库 Join 解决方案、全局唯一 ID 生成方案（雪花算法）
+7. **数据库选型**：为什么选 MySQL 而不是 Oracle？什么时候用 MongoDB？
+8. **ES 倒排索引**：为什么 ES 搜索比 MySQL LIKE 快？深分页怎么解决？
 :::
 
 ::: danger 容易翻车的点
@@ -64,6 +78,7 @@
 - Redis 五大数据结构会用但不知道底层编码，被问 ZSet 为什么用跳表答不上来
 - MVCC 和锁的关系混淆，不理解快照读为什么不需要加锁
 - 分布式锁只停留在 SET NX EX，不知道 Redisson 的续期机制
+- 只会用 MySQL，面对"为什么不用 Oracle/MongoDB/ES"的问题无法回答
 :::
 
 ## 学习建议
@@ -86,10 +101,17 @@
 ### 阶段四：综合实战（1 周）
 10. 设计一个高并发秒杀场景的数据库与缓存方案，画出时序图
 
+### 阶段五：拓展与选型（1 周）
+11. 了解 Oracle 核心架构与国产数据库生态
+12. 掌握 MongoDB 文档模型设计方法论
+13. 建立数据库选型决策框架
+
 ::: details 推荐书单
 - 《高性能 MySQL（第4版）》—— Silvia Botros
 - 《MySQL 技术内幕：InnoDB 存储引擎（第2版）》—— 姜承尧
 - 《Redis 设计与实现》—— 黄健宏
 - 《Redis 开发与运维》—— 付磊
 - 《Elasticsearch 权威指南》
+- 《MongoDB 权威指南（第3版）》
+- 《Oracle Database 12c 完全参考手册》
 :::
