@@ -1,0 +1,220 @@
+/* ============================================
+   Mermaid 图表增强样式（基于 svg-pan-zoom）
+   类名前缀 "me-"（Mermaid Enhance）
+   ============================================ */
+
+/* ---------- 1. 内联工具栏 ---------- */
+.me-toolbar {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  display: flex;
+  gap: 2px;
+  padding: 4px;
+  background: rgba(255, 255, 255, 0.92);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 8px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+  opacity: 0;
+  transform: translateY(-4px);
+  transition: opacity 0.2s ease, transform 0.2s ease;
+  pointer-events: none;
+  z-index: 10;
+  backdrop-filter: blur(8px);
+}
+
+.me-toolbar.visible {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+/* 按钮通用样式 */
+.me-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  padding: 0;
+  border: none;
+  border-radius: 6px;
+  background: transparent;
+  color: #555;
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease;
+  outline: none;
+}
+
+.me-btn:hover {
+  background: rgba(0, 0, 0, 0.06);
+  color: #1a1a1a;
+}
+
+.me-btn:active {
+  background: rgba(0, 0, 0, 0.1);
+  transform: scale(0.95);
+}
+
+/* ---------- 2. 全屏模态框 ---------- */
+.me-fullscreen-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  opacity: 0;
+  transition: opacity 0.3s ease, background 0.3s ease;
+  pointer-events: none;
+}
+
+.me-fullscreen-overlay.active {
+  opacity: 1;
+  background: rgba(0, 0, 0, 0.85);
+  pointer-events: auto;
+}
+
+.me-fullscreen-overlay.closing {
+  opacity: 0;
+  background: rgba(0, 0, 0, 0);
+}
+
+/* 全屏内容区域 */
+.me-fullscreen-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: calc(100% - 80px);
+  height: calc(100% - 100px);
+  overflow: hidden;
+}
+
+.me-fullscreen-content svg {
+  max-width: 100%;
+  max-height: 100%;
+}
+
+/* ---------- 3. 全屏工具栏 ---------- */
+.me-fullscreen-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: calc(100% - 80px);
+  height: 48px;
+  padding: 0 16px;
+  margin-bottom: 8px;
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 10px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  backdrop-filter: blur(12px);
+}
+
+.me-fs-toolbar-left,
+.me-fs-toolbar-right {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.me-fullscreen-toolbar .me-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  color: #444;
+}
+
+.me-fullscreen-toolbar .me-btn:hover {
+  background: rgba(0, 0, 0, 0.06);
+  color: #111;
+}
+
+.me-zoom-level {
+  font-size: 13px;
+  font-weight: 600;
+  color: #555;
+  min-width: 48px;
+  text-align: center;
+  user-select: none;
+  font-variant-numeric: tabular-nums;
+}
+
+.me-fs-hint {
+  font-size: 12px;
+  color: #999;
+  margin-right: 8px;
+  user-select: none;
+}
+
+.me-btn-close {
+  margin-left: 4px;
+}
+
+.me-btn-close:hover {
+  background: rgba(220, 38, 38, 0.1) !important;
+  color: #dc2626 !important;
+}
+
+/* ---------- 4. 暗色主题适配 ---------- */
+html.dark .me-toolbar {
+  background: rgba(30, 30, 30, 0.92);
+  border-color: rgba(255, 255, 255, 0.1);
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.4);
+}
+
+html.dark .me-btn {
+  color: #aaa;
+}
+
+html.dark .me-btn:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: #eee;
+}
+
+html.dark .me-btn:active {
+  background: rgba(255, 255, 255, 0.12);
+}
+
+html.dark .me-fullscreen-toolbar {
+  background: rgba(30, 30, 30, 0.95);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+}
+
+html.dark .me-fullscreen-toolbar .me-btn {
+  color: #bbb;
+}
+
+html.dark .me-fullscreen-toolbar .me-btn:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: #fff;
+}
+
+html.dark .me-zoom-level {
+  color: #bbb;
+}
+
+html.dark .me-fs-hint {
+  color: #777;
+}
+
+html.dark .me-btn-close:hover {
+  background: rgba(239, 68, 68, 0.15) !important;
+  color: #f87171 !important;
+}
+
+/* ---------- 5. 响应式适配 ---------- */
+@media (max-width: 768px) {
+  .me-fullscreen-content,
+  .me-fullscreen-toolbar {
+    width: calc(100% - 32px);
+  }
+
+  .me-fs-hint { display: none; }
+
+  .me-toolbar {
+    opacity: 0.85;
+    transform: translateY(0);
+  }
+}
