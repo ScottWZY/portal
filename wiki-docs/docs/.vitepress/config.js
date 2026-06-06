@@ -611,6 +611,8 @@ export default withMermaid({
   lang: 'zh-CN',
   base: '/',
   cleanUrls: true,
+  outDir: '../dist',
+  ignoreDeadLinks: true,
   themeConfig: {
     logo: '/logo.svg',
     nav: [
