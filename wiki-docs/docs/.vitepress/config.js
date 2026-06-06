@@ -1,6 +1,24 @@
 import { defineConfig } from 'vitepress'
 import { withMermaid } from 'vitepress-plugin-mermaid'
 
+// 修复 dayjs plugin CommonJS/ESM 兼容问题的 Vite 插件
+function fixDayjsPluginCJS() {
+  return {
+    name: 'fix-dayjs-plugin-cjs',
+    transform(code, id) {
+      if (id.includes('dayjs') && id.includes('plugin') && !id.includes('esm')) {
+        // 将 CommonJS module.exports 转换为 ESM default export
+        const transformed = code.replace(
+          /module\.exports\s*=/g,
+          'export default'
+        )
+        return { code: transformed, map: null }
+      }
+      return null
+    }
+  }
+}
+
 // 侧边栏配置 - 按知识域分组
 const sidebar = {
   '/guide/': [
@@ -331,6 +349,24 @@ export default withMermaid({
       dangerLabel: '警告',
       infoLabel: '信息',
       detailsLabel: '详情'
+    }
+  },
+  vite: {
+    build: {
+      // 增加 chunk 大小限制，避免 mermaid 被拆分
+      chunkSizeWarningLimit: 1000
+    },
+    resolve: {
+      alias: {
+        // 将 dayjs CommonJS plugin 重定向到 ESM 版本
+        'dayjs/plugin/duration': 'dayjs/esm/plugin/duration.js',
+        'dayjs/plugin/advancedFormat': 'dayjs/esm/plugin/advancedFormat.js',
+        'dayjs/plugin/customParseFormat': 'dayjs/esm/plugin/customParseFormat.js',
+        'dayjs/plugin/isoWeek': 'dayjs/esm/plugin/isoWeek.js',
+      }
+    },
+    optimizeDeps: {
+      include: ['mermaid', 'dayjs']
     }
   }
 })
