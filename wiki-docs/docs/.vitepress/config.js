@@ -268,12 +268,28 @@ const sidebar = {
   '/ai-application/': [
     { text: 'AI 应用', link: '/ai-application/' },
     {
+      text: '方法论',
+      collapsed: false,
+      items: [
+        { text: 'AI 应用方法论', link: '/ai-application/methodology/' },
+      ]
+    },
+    {
       text: 'LLM 基础',
       collapsed: false,
       items: [
         { text: '大模型概览', link: '/ai-application/llm-basics/' },
         { text: '主流模型对比', link: '/ai-application/llm-basics/models' },
         { text: 'Token 与上下文', link: '/ai-application/llm-basics/token' },
+        {
+          text: '模型选型',
+          collapsed: true,
+          items: [
+            { text: '选型方法论', link: '/ai-application/llm-basics/model-selection/' },
+            { text: '能力矩阵', link: '/ai-application/llm-basics/model-selection/capability-matrix' },
+            { text: '场景匹配', link: '/ai-application/llm-basics/model-selection/scenario-matching' },
+          ]
+        },
       ]
     },
     {
@@ -281,7 +297,8 @@ const sidebar = {
       collapsed: false,
       items: [
         { text: 'Prompt 设计', link: '/ai-application/prompt-engineering/' },
-        { text: 'Few-Shot / CoT', link: '/ai-application/prompt-engineering/advanced' },
+        { text: '高级技巧', link: '/ai-application/prompt-engineering/advanced' },
+        { text: '结构化输出', link: '/ai-application/prompt-engineering/structured-output' },
       ]
     },
     {
@@ -291,24 +308,82 @@ const sidebar = {
         { text: 'RAG 原理', link: '/ai-application/rag/' },
         { text: '向量数据库', link: '/ai-application/rag/vector-db' },
         { text: 'RAG 优化', link: '/ai-application/rag/optimization' },
+        { text: 'RAG 评估', link: '/ai-application/rag/evaluation' },
+        { text: '高级 RAG', link: '/ai-application/rag/advanced' },
       ]
     },
     {
-      text: 'Agent',
+      text: 'Agent 与 MCP',
       collapsed: false,
       items: [
         { text: 'Agent 架构', link: '/ai-application/agent/' },
         { text: '工具调用', link: '/ai-application/agent/function-call' },
         { text: '多 Agent 协作', link: '/ai-application/agent/multi-agent' },
+        { text: '记忆系统', link: '/ai-application/agent/memory' },
+        { text: '框架对比', link: '/ai-application/agent/frameworks' },
+        { text: 'MCP 协议', link: '/ai-application/mcp/' },
+        { text: 'MCP 原语', link: '/ai-application/mcp/tools-resources' },
+        { text: 'Server 开发', link: '/ai-application/mcp/server-dev' },
       ]
     },
     {
-      text: 'LangChain',
+      text: 'LangChain 生态',
       collapsed: false,
       items: [
         { text: 'LangChain 入门', link: '/ai-application/langchain/' },
         { text: 'Chain 与 Memory', link: '/ai-application/langchain/chain' },
         { text: '实战案例', link: '/ai-application/langchain/practice' },
+        { text: '编排框架对比', link: '/ai-application/langchain/ecosystem' },
+      ]
+    },
+    {
+      text: '模型部署',
+      collapsed: false,
+      items: [
+        { text: '部署方案', link: '/ai-application/deployment/' },
+        { text: 'vLLM 生产部署', link: '/ai-application/deployment/vllm' },
+        { text: 'Ollama 本地开发', link: '/ai-application/deployment/ollama' },
+      ]
+    },
+    {
+      text: '低代码平台',
+      collapsed: false,
+      items: [
+        { text: '平台对比', link: '/ai-application/low-code/' },
+      ]
+    },
+    {
+      text: 'AI 安全',
+      collapsed: false,
+      items: [
+        { text: '安全防护', link: '/ai-application/security/' },
+      ]
+    },
+    {
+      text: '企业落地',
+      collapsed: false,
+      items: [
+        { text: '落地方法论', link: '/ai-application/enterprise/' },
+        { text: '成本优化', link: '/ai-application/enterprise/cost-optimization' },
+      ]
+    },
+    {
+      text: '实战项目',
+      collapsed: false,
+      items: [
+        { text: '项目总览', link: '/ai-application/projects/' },
+        { text: '知识库问答', link: '/ai-application/projects/project1-knowledge-qa' },
+        { text: 'AI 代码助手', link: '/ai-application/projects/project2-code-assistant' },
+        { text: '智能数据分析', link: '/ai-application/projects/project3-data-analysis' },
+      ]
+    },
+    {
+      text: 'Python 入门',
+      collapsed: false,
+      items: [
+        { text: 'Python 基础', link: '/ai-application/python-basics/' },
+        { text: 'AI 开发库', link: '/ai-application/python-basics/ai-libs' },
+        { text: '虚拟环境', link: '/ai-application/python-basics/venv' },
       ]
     },
   ],

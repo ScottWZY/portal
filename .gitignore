@@ -1,47 +1,10 @@
-# 操作系统文件
-.DS_Store
-Thumbs.db
+# VitePress 构建缓存
+wiki-docs/docs/.vitepress/cache/
 
-# IDE 配置
-.idea/
+# IDE 和编辑器
 .vscode/
-*.swp
-*.swo
-*~
+.idea/
 
-# 缓存目录
-.vitepress/cache/
-.vitepress/dist/
-.cache/
-*.cache
-
-# 依赖目录
-node_modules/
-pnp/
-pnp.js
-
-# 打包输出
-dist/
-build/
-out/
-target/
-*.egg-info/
-
-# 日志文件
-*.log
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-
-# 环境变量
-.env
-.env.local
-.env.*.local
-
-# 上传文件
-.uploads/
-
-# 临时文件
-tmp/
-temp/
-*.tmp
+# 系统文件
+Thumbs.db
+.DS_Store
