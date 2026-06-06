@@ -1,0 +1,25 @@
+{
+  "name": "senior-engineer-interview-wiki",
+  "version": "1.0.0",
+  "description": "高级工程师/AI应用工程师面试准备知识库 - 包含知识图谱、学习计划、技能逐项击破",
+  "type": "module",
+  "scripts": {
+    "dev": "vitepress dev docs",
+    "build": "vitepress build docs",
+    "preview": "vitepress preview docs"
+  },
+  "keywords": [
+    "interview",
+    "java",
+    "ai",
+    "senior-engineer",
+    "wiki"
+  ],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "mermaid": "^11.15.0",
+    "vitepress": "^1.6.4",
+    "vitepress-plugin-mermaid": "^2.0.17"
+  }
+}
