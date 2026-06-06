@@ -25,7 +25,7 @@
 | [中间件](/middleware/) | 消息队列、分布式理论 | 2 周 |
 | [高并发架构](/high-concurrency/) | 限流熔断、系统设计 | 3 周 |
 | [AI 应用](/ai-application/) | RAG、Agent、LangChain | 2 周 |
-| [前端](/frontend/) | Vue 3 核心（辅助） | 穿插 |
+| [前端](/frontend/) | Vue/React 框架、工程化、浏览器原理、性能优化、面试题 | 2-3 周 |
 | [DevOps](/devops/) | Docker、CI/CD（辅助） | 穿插 |
 | [面试冲刺](/interview/) | 算法、系统设计面试、行为面试 | 最后 2 周 |
 

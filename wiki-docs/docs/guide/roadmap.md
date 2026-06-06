@@ -120,14 +120,52 @@ mindmap
 ### 2.7 前端知识域
 
 > [!INFO]
-> 前端知识对**AI应用工程师**尤为重要（Demo展示、内部工具开发）。面试占比约 **5%~10%**。
+> 前端知识对**高级工程师**和**AI应用工程师**都至关重要（全栈能力、Demo展示、内部工具开发）。面试占比约 **10%~15%**，AI应用工程师岗可达 **20%**。
 
 ```mermaid
 mindmap
   root((前端))
-    Vue3
-    React
+    前端基础
+      HTML/CSS
+      JavaScript 核心
+      ES6+
+      TypeScript
+    Vue 3 生态
+      响应式原理
+      组合式 API
+      Pinia
+      Vue Router
+      Vapor Mode
+      Nuxt
+    React 生态
+      Hooks
+      并发渲染
+      React 19
+      Next.js
     前端工程化
+      包管理/Monorepo
+      构建工具
+      代码规范
+      微前端
+      CI/CD
+    浏览器原理
+      渲染流程
+      Event Loop
+      HTTP 缓存
+    性能优化
+      Core Web Vitals
+      加载优化
+      运行时优化
+      SEO
+    前端安全
+      XSS
+      CSRF
+      CSP
+    面试考点
+      手写题
+      框架题
+      算法
+      系统设计
 ```
 
 ---

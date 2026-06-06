@@ -451,13 +451,107 @@ const sidebar = {
   '/frontend/': [
     { text: '前端', link: '/frontend/' },
     {
-      text: 'Vue 3',
+      text: '前端基础',
       collapsed: false,
       items: [
-        { text: 'Vue 3 核心', link: '/frontend/vue3/' },
-        { text: '组合式 API', link: '/frontend/vue3/composition-api' },
-        { text: '状态管理', link: '/frontend/vue3/state-management' },
-        { text: 'Vite 构建', link: '/frontend/vue3/vite' },
+        { text: '基础概览', link: '/frontend/fundamentals/' },
+        { text: 'HTML/CSS 核心', link: '/frontend/fundamentals/html-css' },
+        { text: 'JavaScript 核心', link: '/frontend/fundamentals/javascript-core' },
+        { text: 'ES6+ 新特性', link: '/frontend/fundamentals/es6-plus' },
+        { text: 'TypeScript', link: '/frontend/fundamentals/typescript' },
+      ]
+    },
+    {
+      text: 'Vue 3 生态',
+      collapsed: false,
+      items: [
+        { text: 'Vue 概览', link: '/frontend/vue-ecosystem/' },
+        { text: '响应式原理', link: '/frontend/vue-ecosystem/reactivity' },
+        { text: '组合式 API', link: '/frontend/vue-ecosystem/composition-api' },
+        { text: 'Pinia 状态管理', link: '/frontend/vue-ecosystem/pinia' },
+        { text: 'Vue Router', link: '/frontend/vue-ecosystem/vue-router' },
+        { text: 'Vapor Mode', link: '/frontend/vue-ecosystem/vapor-mode' },
+        { text: 'Nuxt 服务端渲染', link: '/frontend/vue-ecosystem/nuxt' },
+      ]
+    },
+    {
+      text: 'React 生态',
+      collapsed: false,
+      items: [
+        { text: 'React 概览', link: '/frontend/react-ecosystem/' },
+        { text: 'Hooks 核心', link: '/frontend/react-ecosystem/hooks' },
+        { text: '并发渲染', link: '/frontend/react-ecosystem/concurrent-rendering' },
+        { text: 'React 19 新特性', link: '/frontend/react-ecosystem/react-19-features' },
+        { text: '状态管理', link: '/frontend/react-ecosystem/state-management' },
+        { text: 'Next.js App Router', link: '/frontend/react-ecosystem/nextjs' },
+      ]
+    },
+    {
+      text: '前端工程化',
+      collapsed: false,
+      items: [
+        { text: '工程化概览', link: '/frontend/engineering/' },
+        { text: '包管理', link: '/frontend/engineering/package-manager' },
+        {
+          text: '构建工具',
+          collapsed: true,
+          items: [
+            { text: '构建工具概览', link: '/frontend/engineering/build-tools/' },
+            { text: 'Vite 6', link: '/frontend/engineering/build-tools/vite6' },
+            { text: 'Turbopack', link: '/frontend/engineering/build-tools/turbopack' },
+            { text: 'Rspack', link: '/frontend/engineering/build-tools/rspack' },
+          ]
+        },
+        { text: '代码规范', link: '/frontend/engineering/code-standards' },
+        { text: '微前端', link: '/frontend/engineering/micro-frontends' },
+        { text: 'CI/CD', link: '/frontend/engineering/ci-cd' },
+      ]
+    },
+    {
+      text: '浏览器原理',
+      collapsed: false,
+      items: [
+        { text: '浏览器概览', link: '/frontend/browser/' },
+        { text: '渲染流程', link: '/frontend/browser/rendering' },
+        { text: 'Event Loop', link: '/frontend/browser/event-loop' },
+        { text: 'HTTP 缓存', link: '/frontend/browser/http-cache' },
+        { text: 'WASM / WebGPU', link: '/frontend/browser/wasm-webgpu' },
+      ]
+    },
+    {
+      text: '性能优化与 SEO',
+      collapsed: false,
+      items: [
+        { text: '性能优化概览', link: '/frontend/performance/' },
+        { text: 'Core Web Vitals', link: '/frontend/performance/core-web-vitals' },
+        { text: '优化策略', link: '/frontend/performance/optimization-strategies' },
+        { text: '加载优化', link: '/frontend/performance/loading-optimization' },
+        { text: '运行时优化', link: '/frontend/performance/runtime-optimization' },
+        { text: 'SEO 优化', link: '/frontend/performance/seo' },
+      ]
+    },
+    {
+      text: '前端安全',
+      collapsed: false,
+      items: [
+        { text: '安全概览', link: '/frontend/security/' },
+        { text: 'XSS 防护', link: '/frontend/security/xss' },
+        { text: 'CSRF 防护', link: '/frontend/security/csrf' },
+        { text: 'CSP 内容安全', link: '/frontend/security/csp' },
+        { text: '常见攻击防护', link: '/frontend/security/common-attacks' },
+      ]
+    },
+    {
+      text: '面试高频考点',
+      collapsed: false,
+      items: [
+        { text: '考点概览', link: '/frontend/interview/' },
+        { text: 'JavaScript 手写题', link: '/frontend/interview/js-handwritten' },
+        { text: 'Vue 面试题', link: '/frontend/interview/vue-questions' },
+        { text: 'React 面试题', link: '/frontend/interview/react-questions' },
+        { text: '算法真题', link: '/frontend/interview/algorithm' },
+        { text: '系统设计', link: '/frontend/interview/system-design' },
+        { text: '热点问答', link: '/frontend/interview/hot-qa' },
       ]
     },
   ],
@@ -625,6 +719,7 @@ export default withMermaid({
       { text: '高并发', link: '/high-concurrency/' },
       { text: 'AI 应用', link: '/ai-application/' },
       { text: '算法专题', link: '/algorithm-topics/' },
+      { text: '前端', link: '/frontend/' },
       { text: '面试冲刺', link: '/interview/' },
     ],
     sidebar: sidebar,
