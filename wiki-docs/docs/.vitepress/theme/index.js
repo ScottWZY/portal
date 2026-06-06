@@ -1,35 +1,18 @@
 /**
  * VitePress 自定义主题入口
- * 扩展默认主题，注入 Mermaid 图表增强功能（基于 svg-pan-zoom）
+ * 
+ * 方案一：Vue 组件覆写
+ * - 用自定义 MermaidEnhanced 组件覆盖 vitepress-plugin-mermaid 注册的全局 Mermaid 组件
+ * - 所有缩放/平移/全屏逻辑封装在 Vue 组件内部，无需 DOM 操作或 MutationObserver
+ * - 组件随页面销毁自动清理，SPA 路由切换无需额外处理
  */
 import DefaultTheme from 'vitepress/theme'
-import './style/mermaid-enhance.css'
+import MermaidEnhanced from './components/MermaidEnhanced.vue'
 
 export default {
   extends: DefaultTheme,
-  enhanceApp({ app, router }) {
-    // 使用 Vue 的 onMounted 在组件挂载后初始化增强
-    // 结合 router.afterEach 确保 SPA 导航时也能捕获新的 Mermaid 图表
-    if (typeof window !== 'undefined') {
-      // 首屏加载完成后初始化
-      const initOnReady = () => {
-        import('./utils/mermaid-enhance.js').then(m => m.enhanceMermaid())
-      }
-      
-      if (document.readyState === 'complete' || document.readyState === 'interactive') {
-        setTimeout(initOnReady, 500)
-      } else {
-        window.addEventListener('DOMContentLoaded', () => setTimeout(initOnReady, 500))
-      }
-
-      // SPA 路由切换时重新扫描（延迟足够长，确保新页面 DOM 已就绪）
-      if (router && router.onAfterRouteChange) {
-        router.onAfterRouteChange(() => {
-          setTimeout(() => {
-            import('./utils/mermaid-enhance.js').then(m => m.enhanceMermaid())
-          }, 600)
-        })
-      }
-    }
+  enhanceApp({ app }) {
+    // 覆盖插件注册的全局 Mermaid 组件，替换为增强版
+    app.component('Mermaid', MermaidEnhanced)
   }
 }
