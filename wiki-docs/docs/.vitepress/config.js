@@ -210,17 +210,7 @@ const sidebar = {
   '/middleware/': [
     { text: '中间件', link: '/middleware/' },
     {
-      text: '消息队列',
-      collapsed: false,
-      items: [
-        { text: 'MQ 概览', link: '/middleware/message-queue/' },
-        { text: 'Kafka 核心', link: '/middleware/message-queue/kafka' },
-        { text: 'RocketMQ', link: '/middleware/message-queue/rocketmq' },
-        { text: '消息可靠性', link: '/middleware/message-queue/reliability' },
-      ]
-    },
-    {
-      text: '分布式系统',
+      text: '分布式理论基础',
       collapsed: false,
       items: [
         { text: '分布式理论', link: '/middleware/distributed-system/' },
@@ -228,6 +218,25 @@ const sidebar = {
         { text: '一致性协议', link: '/middleware/distributed-system/consensus' },
         { text: '分布式事务', link: '/middleware/distributed-system/transaction' },
         { text: '分布式 ID', link: '/middleware/distributed-system/id-generator' },
+      ]
+    },
+    {
+      text: '分布式协调',
+      collapsed: false,
+      items: [
+        { text: 'ZooKeeper 核心', link: '/middleware/distributed-system/zookeeper' },
+        { text: 'Nacos 核心', link: '/middleware/distributed-system/nacos' },
+        { text: 'Dubbo 核心', link: '/middleware/distributed-system/dubbo' },
+      ]
+    },
+    {
+      text: '消息队列',
+      collapsed: false,
+      items: [
+        { text: 'MQ 概览', link: '/middleware/message-queue/' },
+        { text: 'Kafka 核心', link: '/middleware/message-queue/kafka' },
+        { text: 'RocketMQ 核心', link: '/middleware/message-queue/rocketmq' },
+        { text: '消息可靠性', link: '/middleware/message-queue/reliability' },
       ]
     },
   ],
