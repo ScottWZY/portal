@@ -254,6 +254,64 @@ const sidebar = {
       ]
     },
     {
+      text: '分布式理论',
+      collapsed: false,
+      items: [
+        { text: '分布式理论总览', link: '/high-concurrency/distributed-theory/' },
+        { text: 'CAP 与 BASE', link: '/high-concurrency/distributed-theory/cap-base' },
+        { text: '一致性协议', link: '/high-concurrency/distributed-theory/consensus-protocol' },
+        { text: '分布式事务', link: '/high-concurrency/distributed-theory/distributed-transaction' },
+        { text: '分布式 ID', link: '/high-concurrency/distributed-theory/distributed-id' },
+        { text: '分布式锁', link: '/high-concurrency/distributed-theory/distributed-lock' },
+      ]
+    },
+    {
+      text: '架构分层与扩展',
+      collapsed: false,
+      items: [
+        { text: '架构扩展总览', link: '/high-concurrency/architecture-scaling/' },
+        { text: '负载均衡', link: '/high-concurrency/architecture-scaling/load-balancing' },
+        { text: '服务发现与注册', link: '/high-concurrency/architecture-scaling/service-discovery' },
+        { text: '动静分离与读写分离', link: '/high-concurrency/architecture-scaling/static-dynamic-separation' },
+        { text: '多活架构与链路追踪', link: '/high-concurrency/architecture-scaling/multi-active-tracing' },
+        { text: '数据库连接池优化', link: '/high-concurrency/architecture-scaling/connection-pool-optimization' },
+      ]
+    },
+    {
+      text: '性能测试与容量规划',
+      collapsed: false,
+      items: [
+        { text: '性能测试总览', link: '/high-concurrency/performance-testing/' },
+        { text: 'JMH 微基准测试', link: '/high-concurrency/performance-testing/jmh-benchmark' },
+        { text: '全链路压测', link: '/high-concurrency/performance-testing/full-link-testing' },
+      ]
+    },
+    {
+      text: '监控告警体系',
+      collapsed: false,
+      items: [
+        { text: '监控告警总览', link: '/high-concurrency/monitoring-alerting/' },
+        { text: '指标采集与 Prometheus', link: '/high-concurrency/monitoring-alerting/metrics-prometheus' },
+        { text: '告警体系设计', link: '/high-concurrency/monitoring-alerting/alerting-design' },
+      ]
+    },
+    {
+      text: '高并发安全',
+      collapsed: false,
+      items: [
+        { text: '网络安全', link: '/high-concurrency/security/network-security' },
+      ]
+    },
+    {
+      text: '大厂案例',
+      collapsed: false,
+      items: [
+        { text: '大厂案例总览', link: '/high-concurrency/real-cases/' },
+        { text: '12306 票务系统', link: '/high-concurrency/real-cases/12306-architecture' },
+        { text: '双十一架构演进', link: '/high-concurrency/real-cases/double-11-evolution' },
+      ]
+    },
+    {
       text: '系统设计',
       collapsed: false,
       items: [
@@ -262,6 +320,9 @@ const sidebar = {
         { text: '短链接系统', link: '/high-concurrency/system-design/short-url' },
         { text: 'IM 系统', link: '/high-concurrency/system-design/im' },
         { text: 'Feed 流系统', link: '/high-concurrency/system-design/feed' },
+        { text: '文件上传系统', link: '/high-concurrency/system-design/file-upload' },
+        { text: '排行榜系统', link: '/high-concurrency/system-design/leaderboard' },
+        { text: '消息推送系统', link: '/high-concurrency/system-design/push-notification' },
       ]
     },
   ],
