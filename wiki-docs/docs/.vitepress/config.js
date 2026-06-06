@@ -484,6 +484,15 @@ const sidebar = {
   '/interview/': [
     { text: '面试冲刺', link: '/interview/' },
     {
+      text: '面试策略',
+      collapsed: false,
+      items: [
+        { text: '策略与准备', link: '/interview/strategy' },
+        { text: '知识体系串联', link: '/interview/knowledge-integration' },
+        { text: '简历优化', link: '/interview/resume' },
+      ]
+    },
+    {
       text: '算法',
       collapsed: false,
       items: [
@@ -503,6 +512,15 @@ const sidebar = {
       collapsed: false,
       items: [
         { text: 'STAR 法则', link: '/interview/behavioral/' },
+      ]
+    },
+    {
+      text: '面试实战',
+      collapsed: false,
+      items: [
+        { text: '高频真题速查', link: '/interview/hot-qa' },
+        { text: '软技能与沟通', link: '/interview/soft-skills' },
+        { text: '模拟面试', link: '/interview/mock-interview' },
       ]
     },
   ],
