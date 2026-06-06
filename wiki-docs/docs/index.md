@@ -4,7 +4,7 @@ layout: home
 hero:
   name: "高级工程师面试 Wiki"
   text: "系统化面试准备知识库"
-  tagline: Java 高级 · 高并发架构 · AI 应用 · 系统设计 · 算法面试
+  tagline: Java 高级 · 高并发架构 · AI 应用 · 算法专题 · 系统设计 · 面试冲刺
   image:
     src: /logo.svg
     alt: Logo
@@ -40,6 +40,10 @@ features:
     title: AI 应用开发
     details: LLM 基础、RAG 架构、Agent 设计、LangChain 实战、Prompt 工程、向量数据库
     link: /ai-application/
+  - icon: 🧮
+    title: 算法专题
+    details: 从冒泡排序到 Transformer —— 经典算法到 AI 算法，场景化趣味解说，完整知识体系
+    link: /algorithm-topics/
   - icon: 🎯
     title: 面试冲刺
     details: 算法高频题、系统设计面试框架、行为面试 STAR 法则、简历优化建议

@@ -524,6 +524,85 @@ const sidebar = {
       ]
     },
   ],
+  '/algorithm-topics/': [
+    { text: '算法专题', link: '/algorithm-topics/' },
+    {
+      text: '经典算法',
+      collapsed: false,
+      items: [
+        { text: '经典算法概览', link: '/algorithm-topics/classic-algorithms/' },
+        { text: '排序算法', link: '/algorithm-topics/classic-algorithms/sorting/' },
+        { text: '冒泡排序', link: '/algorithm-topics/classic-algorithms/sorting/bubble-sort' },
+        { text: '快速排序', link: '/algorithm-topics/classic-algorithms/sorting/quick-sort' },
+        { text: '归并排序', link: '/algorithm-topics/classic-algorithms/sorting/merge-sort' },
+        { text: '堆排序', link: '/algorithm-topics/classic-algorithms/sorting/heap-sort' },
+        { text: '搜索算法', link: '/algorithm-topics/classic-algorithms/searching/' },
+        { text: '二分查找', link: '/algorithm-topics/classic-algorithms/searching/binary-search' },
+        { text: 'BFS 广度优先', link: '/algorithm-topics/classic-algorithms/searching/bfs' },
+        { text: 'DFS 深度优先', link: '/algorithm-topics/classic-algorithms/searching/dfs' },
+        { text: '图论算法', link: '/algorithm-topics/classic-algorithms/graph/' },
+        { text: '最短路径', link: '/algorithm-topics/classic-algorithms/graph/shortest-path' },
+        { text: '拓扑排序', link: '/algorithm-topics/classic-algorithms/graph/topological-sort' },
+        { text: '最小生成树', link: '/algorithm-topics/classic-algorithms/graph/mst' },
+      ]
+    },
+    {
+      text: '算法思想',
+      collapsed: false,
+      items: [
+        { text: '动态规划', link: '/algorithm-topics/classic-algorithms/dynamic-programming/' },
+        { text: '背包问题', link: '/algorithm-topics/classic-algorithms/dynamic-programming/knapsack' },
+        { text: 'LIS 与 LCS', link: '/algorithm-topics/classic-algorithms/dynamic-programming/lis-lcs' },
+        { text: '贪心算法', link: '/algorithm-topics/classic-algorithms/greedy/' },
+        { text: '回溯算法', link: '/algorithm-topics/classic-algorithms/backtracking/' },
+      ]
+    },
+    {
+      text: '数据结构',
+      collapsed: false,
+      items: [
+        { text: '数据结构全景', link: '/algorithm-topics/data-structures/' },
+        { text: '堆', link: '/algorithm-topics/data-structures/heap' },
+        { text: '哈希表', link: '/algorithm-topics/data-structures/hash-table' },
+        { text: '树', link: '/algorithm-topics/data-structures/tree' },
+        { text: '图', link: '/algorithm-topics/data-structures/graph-structure' },
+      ]
+    },
+    {
+      text: '机器学习算法',
+      collapsed: false,
+      items: [
+        { text: 'ML 算法全景', link: '/algorithm-topics/ml-algorithms/' },
+        { text: '线性回归', link: '/algorithm-topics/ml-algorithms/linear-regression' },
+        { text: '逻辑回归', link: '/algorithm-topics/ml-algorithms/logistic-regression' },
+        { text: '决策树', link: '/algorithm-topics/ml-algorithms/decision-tree' },
+        { text: 'SVM', link: '/algorithm-topics/ml-algorithms/svm' },
+        { text: 'K-Means', link: '/algorithm-topics/ml-algorithms/kmeans' },
+      ]
+    },
+    {
+      text: '深度学习算法',
+      collapsed: false,
+      items: [
+        { text: 'DL 算法全景', link: '/algorithm-topics/dl-algorithms/' },
+        { text: '梯度下降', link: '/algorithm-topics/dl-algorithms/gradient-descent' },
+        { text: '反向传播', link: '/algorithm-topics/dl-algorithms/backpropagation' },
+        { text: 'CNN', link: '/algorithm-topics/dl-algorithms/cnn' },
+        { text: 'RNN/LSTM', link: '/algorithm-topics/dl-algorithms/rnn-lstm' },
+        { text: 'Transformer', link: '/algorithm-topics/dl-algorithms/transformer' },
+      ]
+    },
+    {
+      text: 'AI 前沿算法',
+      collapsed: false,
+      items: [
+        { text: '前沿算法概览', link: '/algorithm-topics/ai-frontier/' },
+        { text: '注意力机制', link: '/algorithm-topics/ai-frontier/attention-mechanism' },
+        { text: '扩散模型', link: '/algorithm-topics/ai-frontier/diffusion-model' },
+        { text: '强化学习', link: '/algorithm-topics/ai-frontier/reinforcement-learning' },
+      ]
+    },
+  ],
 }
 
 export default withMermaid({
@@ -543,6 +622,7 @@ export default withMermaid({
       { text: '中间件', link: '/middleware/' },
       { text: '高并发', link: '/high-concurrency/' },
       { text: 'AI 应用', link: '/ai-application/' },
+      { text: '算法专题', link: '/algorithm-topics/' },
       { text: '面试冲刺', link: '/interview/' },
     ],
     sidebar: sidebar,
