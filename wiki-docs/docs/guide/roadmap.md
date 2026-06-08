@@ -12,8 +12,12 @@
 mindmap
   root((面试知识图谱))
     后端基础
+    计算机网络
+    操作系统
+    安全
     架构能力
-    工程素养
+    软件测试
+    软件工程
     AI专项
     前端基础
     面试技巧
@@ -182,11 +186,139 @@ mindmap
     Kubernetes
     CI/CD
     监控告警
+    Linux运维
 ```
 
 ---
 
-### 2.9 算法专题知识域
+### 2.9 计算机网络知识域
+
+> [!WARNING]
+> 计算机网络是后端面试**三大必考基础**之一（Java基础、数据库、计算机网络）。面试占比约 **10%~15%**。
+
+```mermaid
+mindmap
+  root((计算机网络))
+    网络基础
+      TCP/IP 四层模型
+      TCP 三次握手/四次挥手
+      UDP 协议
+    应用层协议
+      HTTP 1.0→3 演进
+      HTTPS/TLS 握手
+      DNS 解析
+      WebSocket
+    网络编程
+      Socket 编程
+      IO 多路复用
+    网络优化
+      CDN 加速
+```
+
+---
+
+### 2.10 操作系统知识域
+
+> [!WARNING]
+> 操作系统是理解并发、IO、内存的底层基础，大厂面试中频繁考察。面试占比约 **8%~10%**。
+
+```mermaid
+mindmap
+  root((操作系统))
+    进程与线程
+      进程 vs 线程
+      进程间通信
+      同步与互斥
+    内存管理
+      虚拟内存
+      分页/分段
+    文件系统
+      inode
+      VFS
+    IO 模型
+      零拷贝
+      epoll
+    进程调度
+      CFS
+      CPU 亲和性
+```
+
+---
+
+### 2.11 安全知识域
+
+> [!WARNING]
+> 安全知识是高级工程师的必备素养，OAuth2/JWT/加密几乎必问。面试占比约 **5%~10%**。
+
+```mermaid
+mindmap
+  root((安全))
+    安全基础
+      密码学
+      认证与授权
+      双向认证
+    Web 安全
+      OWASP Top 10
+      安全编码
+      API 安全
+    架构安全
+      零信任架构
+```
+
+---
+
+### 2.12 软件测试知识域
+
+> [!INFO]
+> 测试能力是高级工程师工程素养的体现，单元测试策略、Mock、TDD是高频考点。面试占比约 **5%~8%**。
+
+```mermaid
+mindmap
+  root((软件测试))
+    测试策略
+      测试金字塔
+      覆盖率
+    单元测试
+      JUnit 5
+      Mockito
+      F.I.R.S.T
+    集成测试
+      TestContainers
+      Spring Boot Test
+    TDD 与 BDD
+      红绿重构
+      Gherkin
+    契约测试
+      Pact
+      消费者驱动
+```
+
+---
+
+### 2.13 软件工程知识域
+
+> [!INFO]
+> 编码规范、设计原则、重构与Code Review反映了高级工程师的工程深度。面试占比约 **5%~8%**。
+
+```mermaid
+mindmap
+  root((软件工程))
+    设计原则
+      SOLID
+      DRY/KISS/YAGNI
+    代码质量
+      坏味道识别
+      重构手法
+      Clean Code
+    工程实践
+      Code Review
+      敏捷开发
+      Scrum/Kanban
+```
+
+---
+
+### 2.14 算法专题知识域
 
 > [!TIP]
 > **算法专题**是从经典算法到 AI 算法的完整知识体系，每个算法按"场景→原理→趣味解说→优缺点"统一模板组织。面试中占比约 **10%~15%**（大厂算法面），对 AI 应用工程师岗位可达 **20%~25%**。
@@ -218,7 +350,7 @@ mindmap
 
 ---
 
-### 2.10 面试技巧知识域
+### 2.15 面试技巧知识域
 
 ```mermaid
 mindmap
@@ -236,6 +368,9 @@ mindmap
 
 ```mermaid
 flowchart LR
+    classDef net fill:#f0fdf4,stroke:#22c55e,stroke-width:2px,color:#15803d
+    classDef os fill:#f0f9ff,stroke:#0ea5e9,stroke-width:2px,color:#0369a1
+    classDef sec fill:#fff1f2,stroke:#f43f5e,stroke-width:2px,color:#be123c
     classDef java fill:#dbeafe,stroke:#2563eb,stroke-width:2px,color:#1e40af
     classDef db fill:#dcfce7,stroke:#16a34a,stroke-width:2px,color:#166534
     classDef spring fill:#fef3c7,stroke:#d97706,stroke-width:2px,color:#92400e
@@ -244,6 +379,12 @@ flowchart LR
     classDef ai fill:#e0f2fe,stroke:#0284c7,stroke-width:2px,color:#075985
     classDef interview fill:#fff7ed,stroke:#ea580c,stroke-width:2px,color:#9a3412
     classDef highlight fill:#fef2f2,stroke:#dc2626,stroke-width:3px,color:#991b1b,font-weight:bold
+
+    subgraph G0["核心基础"]
+        OS["操作系统 进程/内存/IO"]:::os
+        NET["计算机网络 TCP/HTTP/DNS"]:::net
+        SEC["安全 加密/OAuth2/JWT"]:::sec
+    end
 
     subgraph G1["Java 核心基础"]
         JVM["JVM 内存模型 GC / 类加载"]:::java
@@ -283,6 +424,11 @@ flowchart LR
         SYS["系统设计面试 4S 方法 / 经典题"]:::interview
         BEHAVIOR["行为面试 STAR / 项目深挖"]:::interview
     end
+
+    OS --> JVM
+    OS --> CON
+    NET --> MQ
+    NET --> DESIGN
 
     JVM --> MYSQL
     CON --> MYSQL

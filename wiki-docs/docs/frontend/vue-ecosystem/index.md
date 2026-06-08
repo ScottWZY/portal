@@ -10,6 +10,7 @@
 | 路由 | 动态路由、导航守卫执行顺序、history vs hash 模式 | 高 |
 | Vapor Mode | 无虚拟 DOM 编译策略、与 Solid.js 对比 | 中高（趋势） |
 | SSR | Nuxt 3 混合渲染、SSR vs SSG 选择、hydration 过程 | 中高 |
+| UI 组件库 | Element Plus 按需引入/主题定制/表单校验、三大 UI 库对比 | 中高 |
 
 ---
 
@@ -115,6 +116,7 @@ flowchart TB
 | Vue Router | [vue-router.md](./vue-router.md) | 动态路由、导航守卫、懒加载、history 模式 | 高 |
 | Vapor Mode | [vapor-mode.md](./vapor-mode.md) | 无 Virtual DOM、编译期优化、适用场景 | 中高 |
 | Nuxt SSR | [nuxt.md](./nuxt.md) | SSR/SSG/CSR 对比、useFetch、hydration | 中高 |
+| UI 组件库 | [element-plus.md](./element-plus.md) | 按需引入、主题定制、表单校验、三大 UI 库对比 | 中高 |
 
 ---
 

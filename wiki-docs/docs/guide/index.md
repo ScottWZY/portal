@@ -23,10 +23,15 @@
 | [Spring 生态](/spring-ecosystem/) | Spring Boot 原理、Spring Cloud 微服务 | 2 周 |
 | [数据库](/database/) | MySQL 优化、Redis 深度 | 3 周 |
 | [中间件](/middleware/) | 消息队列、分布式理论 | 2 周 |
+| [计算机网络](/computer-network/) | TCP/IP、HTTP、HTTPS、DNS、IO 多路复用 | 1-2 周 |
+| [操作系统](/operating-system/) | 进程线程、虚拟内存、IO 模型、调度 | 1-2 周 |
 | [高并发架构](/high-concurrency/) | 限流熔断、系统设计 | 3 周 |
+| [安全](/security/) | 密码学、认证授权、OWASP、零信任 | 1 周 |
+| [软件测试](/software-testing/) | 测试金字塔、JUnit/Mockito、TDD、契约测试 | 1 周 |
+| [软件工程](/software-engineering/) | SOLID原则、重构、Code Review、敏捷开发 | 1 周 |
 | [AI 应用](/ai-application/) | RAG、Agent、LangChain | 2 周 |
 | [前端](/frontend/) | Vue/React 框架、工程化、浏览器原理、性能优化、面试题 | 2-3 周 |
-| [DevOps](/devops/) | Docker、CI/CD（辅助） | 穿插 |
+| [DevOps](/devops/) | Linux、Docker、CI/CD | 1-2 周 |
 | [面试冲刺](/interview/) | 算法、系统设计面试、行为面试 | 最后 2 周 |
 
 ### 3. 配合 code-projects 实战

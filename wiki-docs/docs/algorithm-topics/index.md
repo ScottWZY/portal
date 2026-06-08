@@ -57,6 +57,26 @@ mindmap
       注意力机制
       扩散模型
       强化学习 RLHF
+    工程系统算法
+      分布式共识
+        Raft 共识
+        Paxos 算法
+      分布式数据
+        一致性哈希
+        雪花算法
+      索引与存储
+        B+Tree 索引
+        LSM-Tree
+        跳表 Skip List
+        布隆过滤器
+      数据库核心
+        MVCC
+      缓存与淘汰
+        LRU / LFU
+      限流算法
+        令牌桶 / 漏桶
+      编码压缩
+        Huffman 编码
 ```
 
 ## 学习路径
@@ -153,10 +173,32 @@ flowchart LR
 
 | 模块 | 核心内容 | 面试权重 |
 |------|----------|----------|
-| [前沿算法概览](./ai-frontier/) | AI 算法发展趋势 + 面试新风向 | ⭐⭐ |
-| [注意力机制](./ai-frontier/attention-mechanism) | 从 Seq2Seq 到 Transformer 的注意力演进 | ⭐⭐⭐ |
+| [前沿算法概览](./ai-frontier/) | AI 前沿算法概览 + 面试趋势 | ⭐⭐ |
+| [注意力机制](./ai-frontier/attention-mechanism) | 注意力机制深度拆解（从 Seq2Seq 到 Transformer） | ⭐⭐⭐ |
 | [扩散模型](./ai-frontier/diffusion-model) | Stable Diffusion 背后的算法原理 | ⭐ |
 | [强化学习](./ai-frontier/reinforcement-learning) | RL 基础 + RLHF 与 LLM 对齐 | ⭐⭐ |
+
+### 🏗️ 工程系统算法
+
+| 模块 | 核心内容 | 面试权重 |
+|------|----------|----------|
+| [工程算法概览](./engineering-algorithms/) | 工程系统算法全景 + 学习路径 | ⭐⭐⭐ |
+| **分布式共识与协调** | | |
+| [Raft 共识](./engineering-algorithms/distributed-consensus/raft) | Leader 选举 + 日志复制 + 安全性 | ⭐⭐⭐ |
+| [Paxos 算法](./engineering-algorithms/distributed-consensus/paxos) | Basic Paxos 两阶段流程，分布式共识理论基石 | ⭐⭐⭐ |
+| [一致性哈希](./engineering-algorithms/distributed-data/consistent-hashing) | 哈希环 + 虚拟节点，动态扩缩容 | ⭐⭐⭐ |
+| [雪花算法](./engineering-algorithms/distributed-data/snowflake) | 64 位 ID 结构，时钟回拨处理 | ⭐⭐⭐ |
+| [B+Tree 索引](./engineering-algorithms/index-storage/bplus-tree) | 多路平衡搜索树，磁盘 IO 优化 | ⭐⭐⭐ |
+| [LSM-Tree](./engineering-algorithms/index-storage/lsm-tree) | 日志结构合并树，写放大 vs 读放大 | ⭐⭐⭐ |
+| [跳表](./engineering-algorithms/index-storage/skip-list) | 多层索引链表，概率平衡 | ⭐⭐⭐ |
+| [布隆过滤器](./engineering-algorithms/index-storage/bloom-filter) | 位数组 + 多哈希函数，假阳性分析 | ⭐⭐⭐ |
+| [MVCC](./engineering-algorithms/database-core/mvcc) | Read View + Undo Log + 版本链 | ⭐⭐⭐ |
+| [LRU](./engineering-algorithms/cache-eviction/lru) | 哈希表 + 双向链表 O(1) 实现 | ⭐⭐⭐ |
+| [LFU](./engineering-algorithms/cache-eviction/lfu) | 频率计数 + 分层淘汰 | ⭐⭐⭐ |
+| [令牌桶](./engineering-algorithms/rate-limit/token-bucket) | 固定速率生成令牌，允许突发 | ⭐⭐⭐ |
+| [漏桶](./engineering-algorithms/rate-limit/leaky-bucket) | 固定速率流出，强制平滑 | ⭐⭐⭐ |
+| [Huffman 编码](./engineering-algorithms/encoding-compression/huffman) | 贪心构建最优前缀树 | ⭐⭐⭐ |
+| *完整列表详见概览页* | 13+ 个次优先级算法 | 详见概览 |
 
 ## 页面内容模板
 
