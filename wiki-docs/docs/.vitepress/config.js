@@ -473,6 +473,12 @@ const sidebar = {
         { text: 'ES6+ 新特性', link: '/frontend/fundamentals/es6-plus' },
         { text: 'TypeScript', link: '/frontend/fundamentals/typescript' },
         { text: 'CSS 预处理器', link: '/frontend/fundamentals/css-preprocessors' },
+        { text: 'DOM & BOM', link: '/frontend/fundamentals/dom-bom' },
+        { text: 'Web 存储', link: '/frontend/fundamentals/web-storage' },
+        { text: '设计模式', link: '/frontend/fundamentals/design-patterns' },
+        { text: 'API 设计', link: '/frontend/fundamentals/api-design' },
+        { text: '可访问性 (A11y)', link: '/frontend/fundamentals/accessibility' },
+        { text: 'Web Components', link: '/frontend/fundamentals/web-components' },
       ]
     },
     {
@@ -518,8 +524,11 @@ const sidebar = {
           ]
         },
         { text: '代码规范', link: '/frontend/engineering/code-standards' },
+        { text: 'CSS 工程化', link: '/frontend/engineering/css-architectures' },
         { text: '微前端', link: '/frontend/engineering/micro-frontends' },
         { text: 'CI/CD', link: '/frontend/engineering/ci-cd' },
+        { text: 'Git 工作流', link: '/frontend/engineering/git-workflow' },
+        { text: '前端测试', link: '/frontend/engineering/testing' },
       ]
     },
     {
@@ -530,6 +539,9 @@ const sidebar = {
         { text: '渲染流程', link: '/frontend/browser/rendering' },
         { text: 'Event Loop', link: '/frontend/browser/event-loop' },
         { text: 'HTTP 缓存', link: '/frontend/browser/http-cache' },
+        { text: 'HTTP 版本对比', link: '/frontend/browser/http-version' },
+        { text: 'CORS 跨域', link: '/frontend/browser/cors' },
+        { text: 'WebSocket', link: '/frontend/browser/websocket' },
         { text: 'WASM / WebGPU', link: '/frontend/browser/wasm-webgpu' },
       ]
     },
@@ -553,6 +565,8 @@ const sidebar = {
         { text: 'XSS 防护', link: '/frontend/security/xss' },
         { text: 'CSRF 防护', link: '/frontend/security/csrf' },
         { text: 'CSP 内容安全', link: '/frontend/security/csp' },
+        { text: 'JWT 认证', link: '/frontend/security/jwt' },
+        { text: 'OAuth 2.0 & SSO', link: '/frontend/security/oauth-sso' },
         { text: '常见攻击防护', link: '/frontend/security/common-attacks' },
       ]
     },
@@ -564,9 +578,20 @@ const sidebar = {
         { text: 'JavaScript 手写题', link: '/frontend/interview/js-handwritten' },
         { text: 'Vue 面试题', link: '/frontend/interview/vue-questions' },
         { text: 'React 面试题', link: '/frontend/interview/react-questions' },
+        { text: 'CSS 面试题', link: '/frontend/interview/css-questions' },
+        { text: '网络面试题', link: '/frontend/interview/network-questions' },
         { text: '算法真题', link: '/frontend/interview/algorithm' },
         { text: '系统设计', link: '/frontend/interview/system-design' },
         { text: '热点问答', link: '/frontend/interview/hot-qa' },
+      ]
+    },
+    {
+      text: '移动跨平台',
+      collapsed: false,
+      items: [
+        { text: '移动跨平台概览', link: '/frontend/mobile/' },
+        { text: '微信小程序', link: '/frontend/mobile/wechat-miniprogram' },
+        { text: '跨平台开发', link: '/frontend/mobile/cross-platform' },
       ]
     },
   ],

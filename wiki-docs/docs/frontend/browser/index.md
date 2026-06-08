@@ -9,6 +9,11 @@
 | 进程 vs 线程 | 进程隔离、沙箱机制、多进程优缺点 | 高 |
 | 导航流程 | URL 输入到页面展示的完整过程 | 极高 |
 | 渲染流程 | DOM/CSSOM/Render Tree/Layout/Paint/Composite | 极高 |
+| HTTP 缓存 | 强缓存/协商缓存、缓存策略设计 | 极高 |
+| HTTP 版本对比 | HTTP/1.1 vs HTTP/2 vs HTTP/3 核心差异 | 中高 |
+| CORS 跨域 | 简单请求/预检请求、credentials 配置、常见解决方案 | 极高 |
+| WebSocket | 握手过程、断线重连、心跳检测 | 中高 |
+| WASM / WebGPU | WebAssembly 概念、WASI 1.0、WebGPU 算力 | 中 |
 | 安全机制 | 同源策略、沙箱、站点隔离 | 中高 |
 
 ---

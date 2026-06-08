@@ -6,6 +6,8 @@
 | --- | --- | --- |
 | XSS 三种类型区别与防御 | :star::star::star::star::star: | 存储型/反射型/DOM 型原理 + CSP + HttpOnly |
 | CSRF 攻击与 Token 防御 | :star::star::star::star::star: | CSRF Token 生成/校验 + SameSite Cookie |
+| JWT 认证 | :star::star::star::star: | JWT 结构/签发/验证、与 Session 对比 |
+| OAuth 2.0 与 SSO | :star::star::star: | 四种授权模式、单点登录原理 |
 | CSP 内容安全策略 | :star::star::star::star: | 指令配置 + nonce/hash 白名单 |
 | 点击劫持防御 | :star::star::star: | X-Frame-Options + frame-ancestors |
 | HTTPS 与中间人攻击 | :star::star::star: | TLS 握手 + HSTS + 证书固定 |

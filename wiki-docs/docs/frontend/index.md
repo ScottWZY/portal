@@ -22,6 +22,12 @@ mindmap
       JavaScript 核心
       ES6+ 新特性
       TypeScript
+      DOM & BOM
+      Web 存储
+      设计模式
+      API 设计
+      可访问性
+      Web Components
     Vue 3 生态
       响应式原理
       组合式 API
@@ -29,6 +35,7 @@ mindmap
       Vue Router
       Vapor Mode
       Nuxt 服务端渲染
+      Element Plus
     React 生态
       Hooks 核心
       并发渲染
@@ -39,12 +46,18 @@ mindmap
       包管理与 Monorepo
       构建工具
       代码规范
+      CSS 工程化
       微前端
       CI/CD
+      Git 工作流
+      前端测试
     浏览器原理
       渲染流程
       Event Loop
       HTTP 缓存
+      HTTP 版本
+      CORS 跨域
+      WebSocket
       WASM / WebGPU
     性能优化
       Core Web Vitals
@@ -56,11 +69,20 @@ mindmap
       XSS 防护
       CSRF 防护
       CSP 内容安全
+      JWT 认证
+      OAuth 2.0 & SSO
       常见攻击防护
+    移动跨平台
+      微信小程序
+      React Native
+      Flutter
+      Taro
     面试考点
       JavaScript 手写题
       Vue 面试题
       React 面试题
+      CSS 面试题
+      网络面试题
       算法真题
       系统设计
       热点问答
@@ -77,6 +99,13 @@ mindmap
 | [JavaScript 核心](./fundamentals/javascript-core) | 原型链、闭包、this 指向、作用域链、深浅拷贝 |
 | [ES6+ 新特性](./fundamentals/es6-plus) | 模块化、箭头函数、Promise、async-await、Optional Chaining |
 | [TypeScript](./fundamentals/typescript) | 泛型、工具类型、类型守卫、TS 5.5+ 新特性 |
+| [CSS 预处理器](./fundamentals/css-preprocessors) | Sass/Less 核心特性、@mixin vs @extend、与原生 CSS 对比 |
+| [DOM & BOM](./fundamentals/dom-bom) | DOM 操作、事件模型、BOM 核心对象、requestAnimationFrame |
+| [Web 存储](./fundamentals/web-storage) | localStorage/sessionStorage/Cookie/IndexedDB 对比 |
+| [设计模式](./fundamentals/design-patterns) | 前端常用模式：观察者/发布订阅/单例/工厂/策略 |
+| [API 设计](./fundamentals/api-design) | RESTful vs GraphQL vs tRPC、接口设计原则 |
+| [可访问性 (A11y)](./fundamentals/accessibility) | WCAG 标准、ARIA 属性、键盘导航、屏幕阅读器 |
+| [Web Components](./fundamentals/web-components) | Custom Elements、Shadow DOM、HTML Templates |
 
 ### 🟢 Vue 3 生态
 
@@ -89,6 +118,7 @@ mindmap
 | [Vue Router](./vue-ecosystem/vue-router) | 动态路由、导航守卫、hash vs history |
 | [Vapor Mode](./vue-ecosystem/vapor-mode) | 无虚拟 DOM、编译优化、性能提升 |
 | [Nuxt 服务端渲染](./vue-ecosystem/nuxt) | SSR/SSG、Nuxt 3/4、全栈开发 |
+| [Element Plus 组件库](./vue-ecosystem/element-plus) | 按需引入、主题定制、表单校验、三大 UI 库对比 |
 
 ### 🔵 React 生态
 
@@ -109,8 +139,11 @@ mindmap
 | [包管理](./engineering/package-manager) | npm/yarn/pnpm 对比、Monorepo、Turborepo |
 | [构建工具](./engineering/build-tools/) | Vite 6 / Turbopack / Rspack 全方位对比 |
 | [代码规范](./engineering/code-standards) | ESLint + Prettier + Husky + commitlint |
+| [CSS 工程化方案](./engineering/css-architectures) | CSS Modules / CSS-in-JS / Tailwind / UnoCSS 对比 |
 | [微前端](./engineering/micro-frontends) | qiankun、Module Federation、JS 沙箱 |
 | [CI/CD](./engineering/ci-cd) | 前端自动化流程、GitHub Actions 实践 |
+| [Git 工作流](./engineering/git-workflow) | Git Flow / GitHub Flow / Trunk-Based、协作规范 |
+| [前端测试](./engineering/testing) | 单元测试/集成测试/E2E 测试、Vitest/Playwright/Cypress |
 
 ### 🌐 浏览器原理
 
@@ -120,6 +153,9 @@ mindmap
 | [渲染流程](./browser/rendering) | DOM→CSSOM→Layout→Paint→Composite、重绘/回流 |
 | [Event Loop](./browser/event-loop) | 宏任务/微任务、执行顺序、与 Node.js 区别 |
 | [HTTP 缓存](./browser/http-cache) | 强缓存/协商缓存、缓存策略设计 |
+| [HTTP 版本对比](./browser/http-version) | HTTP/1.1 vs HTTP/2 vs HTTP/3、多路复用对比 |
+| [CORS 跨域](./browser/cors) | 同源策略、简单请求/预检请求、跨域解决方案 |
+| [WebSocket](./browser/websocket) | 全双工通信、握手过程、心跳重连、与 SSE 对比 |
 | [WASM / WebGPU](./browser/wasm-webgpu) | 新技术趋势、高性能计算场景 |
 
 ### ⚡ 性能优化与 SEO
@@ -141,6 +177,8 @@ mindmap
 | [XSS 防护](./security/xss) | 存储型/反射型/DOM 型 XSS、防御方案 |
 | [CSRF 防护](./security/csrf) | 攻击原理、Token 机制、SameSite Cookie |
 | [CSP 内容安全](./security/csp) | 配置指令、nonce/hash 机制 |
+| [JWT 认证](./security/jwt) | JWT 结构、签名验证、refresh token、无状态认证 |
+| [OAuth 2.0 & SSO](./security/oauth-sso) | 授权码流程、PKCE、CAS 单点登录 |
 | [常见攻击防护](./security/common-attacks) | 点击劫持、iframe 安全、中间人攻击 |
 
 ### 📝 面试高频考点
@@ -151,9 +189,19 @@ mindmap
 | [JavaScript 手写题](./interview/js-handwritten) | 防抖节流、深拷贝、Promise.all、bind/call/apply |
 | [Vue 面试题](./interview/vue-questions) | 响应式、编译优化、keep-alive、nextTick |
 | [React 面试题](./interview/react-questions) | Fiber、Hooks 原理、React 19 编译器优化 |
+| [CSS 面试题](./interview/css-questions) | 布局、定位、动画、BFC、响应式、高频手写 CSS |
+| [网络面试题](./interview/network-questions) | HTTP 协议、TCP 握手、CDN、DNS、安全相关 |
 | [算法真题](./interview/algorithm) | 链表、二叉树、滑动窗口、双指针、LRU 缓存 |
 | [系统设计](./interview/system-design) | 懒加载组件、虚拟列表、路由系统、状态管理库 |
 | [热点问答](./interview/hot-qa) | 2025-2026 最新技术热点问答 |
+
+### 📱 移动跨平台
+
+| 子模块 | 核心内容 |
+|--------|----------|
+| [移动跨平台概览](./mobile/) | 移动端开发现状、技术选型对比 |
+| [微信小程序](./mobile/wechat-miniprogram) | 双线程架构、WXML/WXSS、生命周期、性能优化 |
+| [跨平台开发](./mobile/cross-platform) | React Native / Flutter / Taro / uni-app 对比 |
 
 ## 面试高频题（精选）
 

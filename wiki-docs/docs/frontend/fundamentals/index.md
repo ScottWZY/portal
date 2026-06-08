@@ -8,6 +8,13 @@
 | JavaScript 核心 | 原型链、闭包、this 指向、作用域链、深浅拷贝 | 极高 |
 | ES6+ 新特性 | let/const、箭头函数、Promise、async-await、模块化 | 极高 |
 | TypeScript | 类型系统、泛型、工具类型、interface vs type | 中高 |
+| CSS 预处理器 | Sass/SCSS 变量/嵌套/Mixin/函数、Less 对比、与原生 CSS 对比 | 中高 |
+| DOM & BOM | DOM 操作、事件流(捕获/冒泡)、事件委托、BOM 核心 API | 高 |
+| Web 存储 | Cookie/localStorage/sessionStorage/IndexedDB 对比、Token 存储方案 | 中高 |
+| 设计模式 | 观察者/发布订阅/单例/代理/装饰器/策略、MVC/MVVM | 中高 |
+| API 设计 | RESTful 设计规范、GraphQL 核心概念、两者对比选型 | 中 |
+| 可访问性 | ARIA 属性、键盘导航、语义化 HTML、WCAG 标准 | 中 |
+| Web Components | Custom Elements、Shadow DOM、HTML Templates | 中 |
 
 ---
 
@@ -70,6 +77,13 @@ mindmap
 | [JavaScript 核心概念](./javascript-core.md) | 语言底层机制 | 原型链查找、闭包内存模型、this 绑定优先级 | 3~5 天 |
 | [ES6+ 新特性](./es6-plus.md) | 现代 JS 开发规范 | Promise 实现原理、async-await 本质、Tree Shaking | 3~4 天 |
 | [TypeScript 核心](./typescript.md) | 类型系统保障 | 工具类型实现、条件类型推导、interface vs type | 2~3 天 |
+| [CSS 预处理器](./css-preprocessors.md) | CSS 工程化基础 | Sass/Less 核心特性、@mixin vs @extend、@use vs @import | 1~2 天 |
+| [DOM & BOM 核心](./dom-bom.md) | 浏览器 API 基础 | DOM 操作/事件流/事件委托、BOM 核心 API 总结 | 1~2 天 |
+| [Web 存储方案](./web-storage.md) | 客户端存储 | Cookie/localStorage/sessionStorage/IndexedDB 对比 | 1 天 |
+| [前端设计模式](./design-patterns.md) | 架构思维 | 八大设计模式、MVC/MVP/MVVM 对比 | 2~3 天 |
+| [API 设计](./api-design.md) | 接口设计 | RESTful 规范、GraphQL 核心概念、选型对比 | 1 天 |
+| [可访问性](./accessibility.md) | A11y 基础 | ARIA 属性、键盘导航、语义化 HTML | 1 天 |
+| [Web Components](./web-components.md) | 原生组件方案 | Custom Elements、Shadow DOM、与 Vue/React 对比 | 1 天 |
 
 ---
 

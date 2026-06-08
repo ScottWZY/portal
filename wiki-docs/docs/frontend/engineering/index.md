@@ -9,6 +9,9 @@
 | 代码规范 | ESLint + Prettier 分工、Husky + lint-staged、commitlint | 中高 |
 | 微前端 | qiankun JS 沙箱、Module Federation、样式隔离 | 中高 |
 | CI/CD | GitHub Actions 流水线、自动化部署 OSS + CDN | 中高 |
+| CSS 工程化方案 | CSS Modules / CSS-in-JS / Tailwind 原子化 CSS 对比 | 中高 |
+| Git 工作流 | Git Flow / GitHub Flow / GitLab Flow 对比、rebase vs merge | 中 |
+| 前端测试 | 测试金字塔、Jest/Vitest 单元测试、Playwright E2E | 中高 |
 
 ---
 
@@ -68,7 +71,10 @@ flowchart TB
 | [构建工具](./build-tools/index.md) | Vite 6 双引擎、Turbopack 增量计算、Rspack Webpack 兼容 | Vite、Turbopack、Rspack |
 | [代码规范](./code-standards.md) | ESLint AST 规则、Prettier 格式化、Husky Git Hooks、commitlint | ESLint、Prettier、Husky |
 | [微前端](./micro-frontends.md) | qiankun 沙箱隔离、Module Federation、single-spa | qiankun、Module Federation |
-| [前端 CI/CD](./ci-cd.md) | GitHub Actions 流水线、自动化部署 OSS + CDN | GitHub Actions、Docker |
+| [CI/CD](./ci-cd.md) | 前端自动化流程、GitHub Actions 实践 | 自动化检查→构建→部署 | 1~2 天 |
+| [CSS 工程化方案](./css-architectures.md) | CSS Modules/CSS-in-JS/Tailwind | 对比选型 | 1~2 天 |
+| [Git 工作流](./git-workflow.md) | Git Flow/GitHub Flow/GitLab Flow | rebase vs merge | 1 天 |
+| [前端测试](./testing.md) | 测试金字塔/Jest/Vitest/Playwright | 单元测试/E2E | 2~3 天 |
 
 ---
 
