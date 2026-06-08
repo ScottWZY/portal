@@ -127,6 +127,17 @@ const sidebar = {
         { text: '微服务架构实战', link: '/spring-ecosystem/spring-projects/microservice-project' },
       ]
     },
+    {
+      text: '微服务方法论',
+      collapsed: false,
+      items: [
+        { text: '微服务架构全景', link: '/spring-ecosystem/microservice-methodology/' },
+        { text: '服务拆分', link: '/spring-ecosystem/microservice-methodology/service-split' },
+        { text: 'API 设计规范', link: '/spring-ecosystem/microservice-methodology/api-design' },
+        { text: '服务治理', link: '/spring-ecosystem/microservice-methodology/governance' },
+        { text: '可观测性', link: '/spring-ecosystem/microservice-methodology/observability' },
+      ]
+    },
   ],
   '/database/': [
     { text: '数据库', link: '/database/' },
@@ -598,6 +609,19 @@ const sidebar = {
   '/devops/': [
     { text: 'DevOps', link: '/devops/' },
     {
+      text: 'Linux',
+      collapsed: false,
+      items: [
+        { text: 'Linux 学习路径', link: '/devops/linux/' },
+        { text: '常用命令', link: '/devops/linux/common-commands' },
+        { text: '进程管理', link: '/devops/linux/process-management' },
+        { text: '磁盘与 IO', link: '/devops/linux/disk-io' },
+        { text: '网络排障', link: '/devops/linux/network-troubleshooting' },
+        { text: '性能分析', link: '/devops/linux/performance-analysis' },
+        { text: '系统调优', link: '/devops/linux/system-tuning' },
+      ]
+    },
+    {
       text: 'Docker',
       collapsed: false,
       items: [
@@ -612,6 +636,137 @@ const sidebar = {
       items: [
         { text: 'CI/CD 流程', link: '/devops/cicd/' },
         { text: 'GitHub Actions', link: '/devops/cicd/github-actions' },
+      ]
+    },
+  ],
+  '/software-testing/': [
+    { text: '软件测试', link: '/software-testing/' },
+    {
+      text: '测试基础',
+      collapsed: false,
+      items: [
+        { text: '测试基础总览', link: '/software-testing/' },
+        { text: '单元测试', link: '/software-testing/unit-testing' },
+        { text: '集成测试', link: '/software-testing/integration-testing' },
+        { text: 'TDD 与 BDD', link: '/software-testing/tdd' },
+        { text: '契约测试', link: '/software-testing/contract-testing' },
+      ]
+    },
+  ],
+  '/software-engineering/': [
+    { text: '软件工程', link: '/software-engineering/' },
+    {
+      text: '工程素养',
+      collapsed: false,
+      items: [
+        { text: '软件工程总览', link: '/software-engineering/' },
+        { text: '设计原则', link: '/software-engineering/design-principles' },
+        { text: '代码质量', link: '/software-engineering/code-quality' },
+        { text: 'Code Review', link: '/software-engineering/code-review' },
+        { text: '敏捷开发', link: '/software-engineering/agile' },
+      ]
+    },
+  ],
+  '/computer-network/': [
+    { text: '计算机网络', link: '/computer-network/' },
+    {
+      text: '网络基础',
+      collapsed: false,
+      items: [
+        { text: '网络基础总览', link: '/computer-network/fundamentals/' },
+        { text: 'TCP 协议', link: '/computer-network/fundamentals/tcp' },
+        { text: 'TCP 拥塞控制', link: '/computer-network/fundamentals/tcp-congestion' },
+        { text: 'UDP 协议', link: '/computer-network/fundamentals/udp' },
+      ]
+    },
+    {
+      text: '应用层协议',
+      collapsed: false,
+      items: [
+        { text: '应用层总览', link: '/computer-network/application/' },
+        { text: 'HTTP 协议', link: '/computer-network/application/http' },
+        { text: 'HTTPS 与 TLS', link: '/computer-network/application/https-tls' },
+        { text: 'DNS 解析', link: '/computer-network/application/dns' },
+        { text: 'WebSocket', link: '/computer-network/application/websocket' },
+      ]
+    },
+    {
+      text: '网络编程',
+      collapsed: false,
+      items: [
+        { text: 'Socket 编程', link: '/computer-network/programming/socket' },
+        { text: 'IO 模型', link: '/computer-network/programming/io-models' },
+      ]
+    },
+    {
+      text: '网络优化',
+      collapsed: false,
+      items: [
+        { text: 'CDN 加速', link: '/computer-network/optimization/cdn' },
+      ]
+    },
+  ],
+  '/operating-system/': [
+    { text: '操作系统', link: '/operating-system/' },
+    {
+      text: '进程与线程',
+      collapsed: false,
+      items: [
+        { text: '进程与线程', link: '/operating-system/process-thread/' },
+        { text: '进程间通信', link: '/operating-system/process-thread/ipc' },
+        { text: '同步与互斥', link: '/operating-system/process-thread/sync' },
+      ]
+    },
+    {
+      text: '内存管理',
+      collapsed: false,
+      items: [
+        { text: '虚拟内存', link: '/operating-system/memory/' },
+        { text: '内存分配', link: '/operating-system/memory/allocation' },
+      ]
+    },
+    {
+      text: '文件与 IO',
+      collapsed: false,
+      items: [
+        { text: '文件系统', link: '/operating-system/filesystem/' },
+        { text: 'IO 模型', link: '/operating-system/io/' },
+      ]
+    },
+    {
+      text: '进程调度',
+      collapsed: false,
+      items: [
+        { text: '进程调度', link: '/operating-system/scheduling/' },
+      ]
+    },
+  ],
+  '/security/': [
+    { text: '安全', link: '/security/' },
+    {
+      text: '安全基础',
+      collapsed: false,
+      items: [
+        { text: '安全基础总览', link: '/security/fundamentals/' },
+        { text: '密码学基础', link: '/security/fundamentals/cryptography' },
+        { text: '认证与授权', link: '/security/fundamentals/auth' },
+        { text: '双向认证', link: '/security/fundamentals/mtls' },
+      ]
+    },
+    {
+      text: 'Web 安全',
+      collapsed: false,
+      items: [
+        { text: 'OWASP Top 10', link: '/security/web/owasp-top10' },
+        { text: '安全编码', link: '/security/web/secure-coding' },
+        { text: 'API 安全', link: '/security/web/api-security' },
+      ]
+    },
+    {
+      text: '架构安全',
+      collapsed: false,
+      items: [
+        { text: '零信任架构', link: '/security/architecture/zero-trust' },
       ]
     },
   ],
@@ -836,6 +991,12 @@ export default withMermaid({
       { text: 'AI 应用', link: '/ai-application/' },
       { text: '算法专题', link: '/algorithm-topics/' },
       { text: '前端', link: '/frontend/' },
+      { text: '网络', link: '/computer-network/' },
+      { text: '操作系统', link: '/operating-system/' },
+      { text: '安全', link: '/security/' },
+      { text: '测试', link: '/software-testing/' },
+      { text: '工程', link: '/software-engineering/' },
+      { text: 'DevOps', link: '/devops/' },
       { text: '面试冲刺', link: '/interview/' },
     ],
     sidebar: sidebar,
