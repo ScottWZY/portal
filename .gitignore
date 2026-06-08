@@ -8,3 +8,6 @@ wiki-docs/docs/.vitepress/cache/
 # 系统文件
 Thumbs.db
 .DS_Store
+
+# GitHub Pages 部署子仓库（独立管理）
+portal/
