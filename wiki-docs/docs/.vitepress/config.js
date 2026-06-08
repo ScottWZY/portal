@@ -1010,7 +1010,7 @@ export default withMermaid({
   title: '高级工程师面试 Wiki',
   description: '高级工程师 / AI 应用工程师面试准备知识库',
   lang: 'zh-CN',
-  base: '/',
+  base: '/portal/',
   cleanUrls: true,
   outDir: '../dist',
   ignoreDeadLinks: true,
@@ -1018,24 +1018,49 @@ export default withMermaid({
     logo: '/logo.svg',
     nav: [
       { text: '首页', link: '/' },
-      { text: '学习导航', link: '/guide/' },
-      { text: 'Java 高级', link: '/java-advanced/' },
-      { text: 'Spring', link: '/spring-ecosystem/' },
-      { text: '数据库', link: '/database/' },
-      { text: '中间件', link: '/middleware/' },
-      { text: '高并发', link: '/high-concurrency/' },
-      { text: 'AI 应用', link: '/ai-application/' },
-      { text: '算法专题', link: '/algorithm-topics/' },
-      { text: '前端', link: '/frontend/' },
-      { text: '网络', link: '/computer-network/' },
-      { text: '操作系统', link: '/operating-system/' },
-      { text: '安全', link: '/security/' },
-      { text: '测试', link: '/software-testing/' },
-      { text: '工程', link: '/software-engineering/' },
-      { text: 'DevOps', link: '/devops/' },
-      { text: '大数据', link: '/big-data/' },
-      { text: '管理', link: '/tech-management/' },
-      { text: '面试冲刺', link: '/interview/' },
+      {
+        text: '后端核心技术',
+        items: [
+          { text: 'Java 高级', link: '/java-advanced/' },
+          { text: 'Spring 生态', link: '/spring-ecosystem/' },
+          { text: '数据库', link: '/database/' },
+          { text: '中间件', link: '/middleware/' },
+          { text: '高并发架构', link: '/high-concurrency/' },
+        ]
+      },
+      {
+        text: 'AI 与算法',
+        items: [
+          { text: 'AI 应用', link: '/ai-application/' },
+          { text: '算法专题', link: '/algorithm-topics/' },
+        ]
+      },
+      {
+        text: '全栈基础',
+        items: [
+          { text: '前端', link: '/frontend/' },
+          { text: '计算机网络', link: '/computer-network/' },
+          { text: '操作系统', link: '/operating-system/' },
+        ]
+      },
+      {
+        text: '工程实践',
+        items: [
+          { text: 'DevOps', link: '/devops/' },
+          { text: '安全', link: '/security/' },
+          { text: '软件测试', link: '/software-testing/' },
+          { text: '软件工程', link: '/software-engineering/' },
+          { text: '大数据', link: '/big-data/' },
+        ]
+      },
+      {
+        text: '面试 & 管理',
+        items: [
+          { text: '学习导航', link: '/guide/' },
+          { text: '面试冲刺', link: '/interview/' },
+          { text: '技术管理', link: '/tech-management/' },
+        ]
+      },
     ],
     sidebar: sidebar,
     socialLinks: [
