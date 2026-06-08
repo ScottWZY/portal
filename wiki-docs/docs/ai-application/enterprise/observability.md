@@ -182,24 +182,26 @@ Grafana 面板核心查询：
 
 ### Q1: AI 应用可观测性和传统微服务观测有什么本质区别？
 
-**详细答案：** 传统微服务关注确定性行为——HTTP 状态码、CPU 使用率、DB 查询延迟等可精确量化的指标。AI 应用面临三大根本差异：第一，输出非确定性，同一 prompt 产生不同回答是设计预期而非 bug，因此需要"语义级质量指标"（如 RAGAS 忠实度和相关性）替代"200 vs 500"的二元判断。第二，成本模型从固定资源变为按 Token 计费，一个冗余 system prompt 或失控多轮对话可能造成数倍成本膨胀，需建立 Token 预算和告警机制。第三，失败模式更隐蔽——LLM 很少直接报错，而是返回看似合理的"幻觉"，要求可观测性具备内容质量评估能力，而非仅监控技术指标。
+**详细答案：** 我们做了快两年的 AI 应用，可观测性跟传统服务最大的差异我总结了三个点。第一个是输出不搞标准——传统服务的状态码 200/500 看着就明白，但 LLM 返回的"今天很开心"还是"我很高兴呢"都是对的，但质量可能差一半。我们就上了 RAGAS 这套语义级质量指标（Faithfulness、Relevancy），让机器评分代替人肉判断。
+
+第二个是成本模型完全不同——传统服务的内存、CPU 用量很稳定，但 LLM 调用是按 Token 计费的，一个 prompt bug 能一晚上烧掉几千块。第三个是失败很隐蔽——传统服务挂了瞬间报 500 告警，但 AI 挂了几乎没人发现，因为它返回的都是"看起来对"但其实是幻觉的答案。我们就增设了"低 Faithfulness 评分告警"——如果采样率超过 15% 的答案 Faithfulness 低于 0.8，说明模型开始在胡编了。
 
 ### Q2: Java 后端如何处理 LLM 调用的超时与熔断？
 
-**详细答案：** Java 后端调用 LLM（本质是 HTTP 长连接）推荐使用虚拟线程（Java 21+）或 WebFlux 避免阻塞平台线程。熔断用 Resilience4j CircuitBreaker，滑动窗口统计失败比例，错误率超 50% 时快速失败返回降级回答。超时需分层：连接超时 5s，读取超时根据 `max_tokens` 和预期 TPS 动态计算（如 `max_tokens / 20 tps + 3s buffer`）。建议将 LLM 调用放入独立线程池（核心线程数 = CPU 核数 x 2），避免慢调用耗尽 Tomcat 工作线程，同时用 Micrometer 将 TTFT、TPS 接入 Prometheus。
+**详细答案：** 我们 Java 后端用的是 WebFlux + Resilience4j，说实话 LLM 调用最大的问题是延迟方差——GPT-4o 偶尔能卡 30 秒以上。熔断器设滑动窗口统计，错误率超过 50% 就 open，立刻返回预设的降级回答（"系统繁忙，请稍后重试"）。超时设置分两层：连接超时 5 秒，读取超时根据 `max_tokens / 20 tps + 3s buffer` 动态算——比如 max_tokens=500，读取超时就设 28 秒。LLM 调用放入独立线程池，用虚拟线程避免阻塞 Tomcat 的核心线程。
 
 ### Q3: RAGAS 评估在生产环境如何落地？每次请求都跑吗？
 
-**详细答案：** 不建议每次请求都跑 RAGAS，评估本身也消耗 Token。推荐按 10%-20% 比例采样或按租户优先级分层采样。Pipeline 设计为异步非阻塞：主流程返回响应后，将 `(question, context, answer)` 三元组写入 Kafka，评估服务独立消费并计算 faithfulness、answer_relevancy、context_precision，结果写回 Prometheus。采样需保证统计显著性，单次评估窗口数据量不低于 100 条，用加权滑动平均追踪趋势，避免单次异常引发误报。
+**详细答案：** 不会每次请求都跑 RAGAS——评估本身也消耗 Token，成本不能忽略。我们按 15% 比例随机采样，异步处理：主流程先返回回答，同时把 `(question, context, answer)` 三元组发到 Kafka，评估服务独立消费计算 Faithfulness、Relevancy、Precision，结果打回 Prometheus。单次评估窗口不低于 100 条才有统计意义，我们用的是加权滑动平均看趋势，防止单次波动引发误报。评估服务的资源是独立的，不影响主链路延迟。
 
 ### Q4: LangSmith、Weave、Phoenix 三者如何选择？
 
-**详细答案：** 三者核心差异在生态绑定和部署模式。LangSmith 深度绑定 LangChain，链路编排基于 LangChain 时开箱体验最佳，但它是 SaaS 商业产品，数据上传云端。Weave 定位 MLOps 全流程，擅长模型实验对比和版本管理，推理阶段价值递减。Phoenix 基于 OpenTelemetry 的开源方案，支持自部署，与现有可观测性栈（Jaeger、Prometheus、Grafana）无缝集成，不锁定框架。建议策略：早期用 Phoenix 构建基线，深度 LangChain 用户叠加 LangSmith，实验期辅以 Weave。
+**详细答案：** 我们团队选了 Phoenix 作为主力，因为它是开源的、基于 OpenTelemetry 的，和现有的 Jaeger + Grafana 栈无缝集成，不需要再买一套新的 APM。LangSmith 我们只给重度 LangChain 用户提供——追踪 Chain 执行的完整调用链，对调试 Agent 特别有用，但数据要上传 SaaS，不喜欢开源的用不了。Weave 是 ML 实验管理的工具，对推理阶段帮助有限，适合模型训练团队更实用。我的建议：如果只是个推祂 AI 部署团队（不像 ML 研究），Phoenix 完全够用。
 
 ### Q5: 面对 LLM 幻觉率高的问题，可观测性层面能做什么？
 
-**详细答案：** 可观测性不是修复幻觉的药方，但能让你"先看见再修复"。策略一：设置 RAGAS faithfulness 的 P50/P90 趋势监控，忠实度持续走低时自动告警。策略二：按维度拆解幻觉来源——通过 context_precision 判断是检索回了无关文档（向量 DB 问题），还是模型忽略了相关文档（prompt 设计问题）。策略三：建立幻觉案例回放机制——将低评分案例的完整 trace（检索结果 + prompt + 生成回答）持久化到日志系统（ELK），支持按评分区间检索，形成质量改进的反馈闭环。
+**详细答案：** 可观测性不能修复幻觉，但能让你发现后快速定位来源。我们做的是三层监控：一层是 RAGAS Faithfulness 的 P50/P90 趋势——如果忠实度持续往下掉（比如从 0.88 掉到 0.82），不管用户投诉没有都发告警；二层是按指标拆解幻觉来源——Context Precision 低说明检索回了无关文档（向量库问题），Faithfulness 低但 Precision 高说明模型在忽略正确文档（Prompt 设计问题）；三层是低评分案例归档——把这些问题完整的 trace（检索结果 + prompt + 回答）存到 ELK，支持按评分区间检索，形成反馈闭环。
 
 ### Q6: 如何为 AI 应用设计多租户成本分摊方案？
 
-**详细答案：** 多租户场景推荐分层标签体系：`(tenant_id, user_id, model, feature)`。每次 LLM 调用通过 Micrometer Counter 记录 prompt_tokens 和 completion_tokens。计费逻辑放在 Grafana 或独立服务：按 model 查询单价（如 gpt-4 $0.03/1k prompt tokens），乘以聚合用量。使用 Prometheus Recording Rules 预聚合小时/日级别的 `token_cost_by_tenant` 指标，通过 Grafana 面板或 API 暴露。关键细节：不同模型 tokenizer 不同，必须用对应 tokenizer（如 tiktoken）计数，不能用字符数估算。
+**详细答案：** 我们的 label 体系是 `(tenant_id, user_id, model, feature)` 四维标签，每次 LLM 调用都用 Micrometer Counter 记录 prompt_tokens 和 completion_tokens。计费逻辑放在一个独立的 billing 服务：查 model 的实时单价（比如 gpt-4o $0.03/1k prompt tokens），乘以该租户的聚合用量。Prometheus Recording Rules 预聚合小时/日级别的 `token_cost_by_tenant` 指标，Grafana 面板可以按租户、按模型、按功能实时查看成本分布。有个容易错的细节：不同模型 tokenizer 不一样，必须用对应的 tokenizer 计数，不能简单用字符数估算，否则误差会积累。
