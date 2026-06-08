@@ -628,6 +628,16 @@ const sidebar = {
         { text: 'Docker 基础', link: '/devops/docker/' },
         { text: 'Dockerfile', link: '/devops/docker/dockerfile' },
         { text: 'Docker Compose', link: '/devops/docker/compose' },
+        { text: 'Docker 核心原理', link: '/devops/docker-core' },
+        { text: 'Docker 网络', link: '/devops/docker-network' },
+      ]
+    },
+    {
+      text: 'Kubernetes',
+      collapsed: false,
+      items: [
+        { text: 'K8s 核心概念', link: '/devops/k8s-core' },
+        { text: 'K8s 进阶', link: '/devops/k8s-advanced' },
       ]
     },
     {
@@ -635,7 +645,33 @@ const sidebar = {
       collapsed: false,
       items: [
         { text: 'CI/CD 流程', link: '/devops/cicd/' },
+        { text: 'CI/CD 流水线', link: '/devops/cicd-pipeline' },
         { text: 'GitHub Actions', link: '/devops/cicd/github-actions' },
+      ]
+    },
+  ],
+  '/big-data/': [
+    { text: '大数据基础', link: '/big-data/' },
+    {
+      text: '大数据生态',
+      collapsed: false,
+      items: [
+        { text: '大数据总览', link: '/big-data/' },
+        { text: 'Hadoop 生态', link: '/big-data/hadoop-ecosystem' },
+        { text: 'Spark 核心', link: '/big-data/spark-core' },
+        { text: 'Flink 流处理', link: '/big-data/flink-core' },
+      ]
+    },
+  ],
+  '/tech-management/': [
+    { text: '技术管理', link: '/tech-management/' },
+    {
+      text: '管理能力',
+      collapsed: false,
+      items: [
+        { text: '技术管理总览', link: '/tech-management/' },
+        { text: '技术方案设计', link: '/tech-management/technical-design' },
+        { text: '团队管理', link: '/tech-management/team-management' },
       ]
     },
   ],
@@ -997,6 +1033,8 @@ export default withMermaid({
       { text: '测试', link: '/software-testing/' },
       { text: '工程', link: '/software-engineering/' },
       { text: 'DevOps', link: '/devops/' },
+      { text: '大数据', link: '/big-data/' },
+      { text: '管理', link: '/tech-management/' },
       { text: '面试冲刺', link: '/interview/' },
     ],
     sidebar: sidebar,

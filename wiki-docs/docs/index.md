@@ -68,3 +68,15 @@ features:
     title: 面试冲刺
     details: 算法高频题、系统设计面试框架、行为面试 STAR 法则、简历优化建议
     link: /interview/
+  - icon: 🐧
+    title: DevOps 与云原生
+    details: Linux命令/性能调优、Docker容器化、Kubernetes编排、CI/CD流水线
+    link: /devops/
+  - icon: 📊
+    title: 大数据基础
+    details: Hadoop生态、Spark核心引擎、Flink流处理、OLAP与实时计算
+    link: /big-data/
+  - icon: 👥
+    title: 技术管理
+    details: 技术选型与方案设计、团队管理、Code Review文化、技术债治理
+    link: /tech-management/

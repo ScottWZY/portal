@@ -31,7 +31,9 @@
 | [软件工程](/software-engineering/) | SOLID原则、重构、Code Review、敏捷开发 | 1 周 |
 | [AI 应用](/ai-application/) | RAG、Agent、LangChain | 2 周 |
 | [前端](/frontend/) | Vue/React 框架、工程化、浏览器原理、性能优化、面试题 | 2-3 周 |
-| [DevOps](/devops/) | Linux、Docker、CI/CD | 1-2 周 |
+| [DevOps](/devops/) | Linux、Docker、K8s、CI/CD | 1-2 周 |
+| [大数据](/big-data/) | Hadoop/Spark/Flink 核心原理 | 0.5-1 周 |
+| [技术管理](/tech-management/) | 技术方案设计、团队管理 | 0.5 周 |
 | [面试冲刺](/interview/) | 算法、系统设计面试、行为面试 | 最后 2 周 |
 
 ### 3. 配合 code-projects 实战
