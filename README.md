@@ -22,13 +22,13 @@
 ### 克隆仓库
 
 ```bash
-git clone https://gitee.com/wzy_2022/know-share.git
+git clone https://github.com/ScottWZY/portal.git
 ```
 
 ### 切换分支
 
 ```bash
-cd know-share
+cd portal
 git checkout develop
 ```
 
@@ -43,7 +43,7 @@ git pull origin develop
 ## 项目结构
 
 ```
-know-share/
+portal/
 ├── ai-application/       # AI 应用相关内容
 ├── algorithm-topics/     # 算法专题
 ├── big-data/             # 大数据
