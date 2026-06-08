@@ -371,6 +371,9 @@ const sidebar = {
         { text: 'RAG 优化', link: '/ai-application/rag/optimization' },
         { text: 'RAG 评估', link: '/ai-application/rag/evaluation' },
         { text: '高级 RAG', link: '/ai-application/rag/advanced' },
+        { text: '多模态 RAG', link: '/ai-application/rag/multimodal' },
+        { text: 'GraphRAG 实践', link: '/ai-application/rag/graph-rag' },
+        { text: '大规模 RAG 架构', link: '/ai-application/rag/large-scale' },
       ]
     },
     {
@@ -404,6 +407,7 @@ const sidebar = {
         { text: '部署方案', link: '/ai-application/deployment/' },
         { text: 'vLLM 生产部署', link: '/ai-application/deployment/vllm' },
         { text: 'Ollama 本地开发', link: '/ai-application/deployment/ollama' },
+        { text: '缓存策略', link: '/ai-application/deployment/caching' },
       ]
     },
     {
@@ -426,6 +430,7 @@ const sidebar = {
       items: [
         { text: '落地方法论', link: '/ai-application/enterprise/' },
         { text: '成本优化', link: '/ai-application/enterprise/cost-optimization' },
+        { text: '可观测性', link: '/ai-application/enterprise/observability' },
       ]
     },
     {
@@ -447,6 +452,14 @@ const sidebar = {
         { text: '虚拟环境', link: '/ai-application/python-basics/venv' },
       ]
     },
+    {
+      text: '高级专题',
+      collapsed: false,
+      items: [
+        { text: 'LLM 微调实践', link: '/ai-application/fine-tuning/' },
+        { text: '多模态应用', link: '/ai-application/applications/multimodal' },
+      ]
+    },
   ],
   '/frontend/': [
     { text: '前端', link: '/frontend/' },
@@ -459,6 +472,7 @@ const sidebar = {
         { text: 'JavaScript 核心', link: '/frontend/fundamentals/javascript-core' },
         { text: 'ES6+ 新特性', link: '/frontend/fundamentals/es6-plus' },
         { text: 'TypeScript', link: '/frontend/fundamentals/typescript' },
+        { text: 'CSS 预处理器', link: '/frontend/fundamentals/css-preprocessors' },
       ]
     },
     {
@@ -472,6 +486,7 @@ const sidebar = {
         { text: 'Vue Router', link: '/frontend/vue-ecosystem/vue-router' },
         { text: 'Vapor Mode', link: '/frontend/vue-ecosystem/vapor-mode' },
         { text: 'Nuxt 服务端渲染', link: '/frontend/vue-ecosystem/nuxt' },
+        { text: 'Element Plus 组件库', link: '/frontend/vue-ecosystem/element-plus' },
       ]
     },
     {
@@ -686,14 +701,90 @@ const sidebar = {
         { text: 'Transformer', link: '/algorithm-topics/dl-algorithms/transformer' },
       ]
     },
-    {
-      text: 'AI 前沿算法',
+    { text: 'AI 前沿算法',
       collapsed: false,
       items: [
         { text: '前沿算法概览', link: '/algorithm-topics/ai-frontier/' },
         { text: '注意力机制', link: '/algorithm-topics/ai-frontier/attention-mechanism' },
         { text: '扩散模型', link: '/algorithm-topics/ai-frontier/diffusion-model' },
         { text: '强化学习', link: '/algorithm-topics/ai-frontier/reinforcement-learning' },
+      ]
+    },
+    {
+      text: '工程系统算法',
+      collapsed: false,
+      items: [
+        { text: '工程算法概览', link: '/algorithm-topics/engineering-algorithms/' },
+        {
+          text: '分布式共识与协调',
+          collapsed: true,
+          items: [
+            { text: 'Raft 共识', link: '/algorithm-topics/engineering-algorithms/distributed-consensus/raft' },
+            { text: 'Paxos 算法', link: '/algorithm-topics/engineering-algorithms/distributed-consensus/paxos' },
+            { text: 'ZAB 协议', link: '/algorithm-topics/engineering-algorithms/distributed-consensus/zab' },
+            { text: 'Bully 选举', link: '/algorithm-topics/engineering-algorithms/distributed-consensus/bully-election' },
+            { text: '两阶段提交', link: '/algorithm-topics/engineering-algorithms/distributed-consensus/two-phase-commit' },
+            { text: 'Gossip 协议', link: '/algorithm-topics/engineering-algorithms/distributed-consensus/gossip' },
+          ]
+        },
+        {
+          text: '分布式数据算法',
+          collapsed: true,
+          items: [
+            { text: '一致性哈希', link: '/algorithm-topics/engineering-algorithms/distributed-data/consistent-hashing' },
+            { text: '雪花算法', link: '/algorithm-topics/engineering-algorithms/distributed-data/snowflake' },
+            { text: 'Quorum 机制', link: '/algorithm-topics/engineering-algorithms/distributed-data/quorum' },
+            { text: '向量时钟', link: '/algorithm-topics/engineering-algorithms/distributed-data/vector-clock' },
+          ]
+        },
+        {
+          text: '索引与存储算法',
+          collapsed: true,
+          items: [
+            { text: 'B+Tree 索引', link: '/algorithm-topics/engineering-algorithms/index-storage/bplus-tree' },
+            { text: 'LSM-Tree', link: '/algorithm-topics/engineering-algorithms/index-storage/lsm-tree' },
+            { text: '跳表 Skip List', link: '/algorithm-topics/engineering-algorithms/index-storage/skip-list' },
+            { text: '倒排索引', link: '/algorithm-topics/engineering-algorithms/index-storage/inverted-index' },
+            { text: '布隆过滤器', link: '/algorithm-topics/engineering-algorithms/index-storage/bloom-filter' },
+          ]
+        },
+        {
+          text: '数据库核心算法',
+          collapsed: true,
+          items: [
+            { text: 'MVCC', link: '/algorithm-topics/engineering-algorithms/database-core/mvcc' },
+            { text: '两阶段锁 2PL', link: '/algorithm-topics/engineering-algorithms/database-core/two-phase-locking' },
+            { text: '快照隔离', link: '/algorithm-topics/engineering-algorithms/database-core/snapshot-isolation' },
+          ]
+        },
+        {
+          text: '缓存与淘汰算法',
+          collapsed: true,
+          items: [
+            { text: 'LRU', link: '/algorithm-topics/engineering-algorithms/cache-eviction/lru' },
+            { text: 'LFU', link: '/algorithm-topics/engineering-algorithms/cache-eviction/lfu' },
+            { text: 'ARC 自适应', link: '/algorithm-topics/engineering-algorithms/cache-eviction/arc' },
+            { text: 'Clock 时钟', link: '/algorithm-topics/engineering-algorithms/cache-eviction/clock' },
+            { text: '缓存一致性', link: '/algorithm-topics/engineering-algorithms/cache-eviction/cache-consistency' },
+          ]
+        },
+        {
+          text: '限流算法',
+          collapsed: true,
+          items: [
+            { text: '令牌桶', link: '/algorithm-topics/engineering-algorithms/rate-limit/token-bucket' },
+            { text: '漏桶', link: '/algorithm-topics/engineering-algorithms/rate-limit/leaky-bucket' },
+          ]
+        },
+        {
+          text: '编码与压缩算法',
+          collapsed: true,
+          items: [
+            { text: 'Huffman 编码', link: '/algorithm-topics/engineering-algorithms/encoding-compression/huffman' },
+            { text: 'LZW 字典编码', link: '/algorithm-topics/engineering-algorithms/encoding-compression/lzw' },
+            { text: 'Varint 变长编码', link: '/algorithm-topics/engineering-algorithms/encoding-compression/varint' },
+          ]
+        },
       ]
     },
   ],

@@ -38,6 +38,9 @@ mindmap
       优化策略
       评估体系
       高级 RAG
+      多模态 RAG
+      GraphRAG
+      大规模 RAG
     Agent 与 MCP
       Agent 架构
       工具调用
@@ -48,12 +51,17 @@ mindmap
     工程化
       LangChain 生态
       模型部署
+      缓存策略
       低代码平台
       AI 安全
+      AI 可观测性
     企业落地
       落地方法论
       成本优化
       实战项目
+    高级专题
+      LLM 微调
+      多模态应用
 ```
 
 ## 核心模块
@@ -90,6 +98,9 @@ mindmap
 | [RAG 优化](./rag/optimization) | 分块策略、混合检索、Rerank、HyDE、查询改写、多路召回 |
 | [RAG 评估](./rag/evaluation) | RAGAS 四大指标、评估集构建、自动化评估 |
 | [高级 RAG](./rag/advanced) | Graph RAG、Agentic RAG、Self-RAG、Corrective RAG、RAPTOR |
+| [多模态 RAG](./rag/multimodal) | 图片/表格/OCR 多模态检索、ColPali 视觉检索、图文混合召回 |
+| [GraphRAG 实践](./rag/graph-rag) | 知识图谱构建、实体关系抽取、图谱检索、Neo4j 集成 |
+| [大规模 RAG 架构](./rag/large-scale) | 分层存储、分布式检索、多租户隔离、增量更新策略 |
 
 ### 🤖 Agent 与 MCP
 
@@ -115,6 +126,7 @@ mindmap
 | [模型部署](./deployment/) | vLLM/TGI/Ollama 对比、量化、GPU 选型 |
 | [vLLM 生产部署](./deployment/vllm) | PagedAttention、性能调优、多卡部署 |
 | [Ollama 本地开发](./deployment/ollama) | 本地模型管理、OpenAI 兼容 API |
+| [缓存策略](./deployment/caching) | 语义缓存、多级缓存、Prompt 缓存、GPTCache 实战 |
 | [低代码平台](./low-code/) | Dify/Coze/FastGPT 对比与选型 |
 | [AI 安全](./security/) | Prompt 注入、越狱防护、数据泄露、合规 |
 
@@ -124,6 +136,7 @@ mindmap
 |------|----------|
 | [落地方法论](./enterprise/) | 五步法（评估→POC→选型→部署→运营）、ROI 评估 |
 | [成本优化](./enterprise/cost-optimization) | Token 监控、缓存策略、模型路由、语义缓存 |
+| [可观测性](./enterprise/observability) | 三大支柱、Token/质量/延迟监控、LangSmith/Phoenix/MLflow |
 
 ### 🚀 实战项目
 
@@ -141,6 +154,13 @@ mindmap
 | [Python 基础](./python-basics/) | Java 开发者视角的 Python 速成 |
 | [AI 开发库](./python-basics/ai-libs) | openai/requests/pydantic/fastapi/asyncio |
 | [虚拟环境](./python-basics/venv) | venv/pip/Poetry 包管理 |
+
+### 🎯 高级专题
+
+| 模块 | 核心内容 |
+|------|----------|
+| [LLM 微调实践](./fine-tuning/) | SFT/LoRA/QLoRA/DPO、数据准备、成本估算、常见陷阱 |
+| [多模态应用](./applications/multimodal) | 图像理解、OCR、AIGC、多模态交互、企业场景落地 |
 
 ## 面试高频题
 
