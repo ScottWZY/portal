@@ -452,6 +452,549 @@ DAU = 5000 万
 不要在系统设计面试中说"这个很简单，直接加机器就行了"。水平扩展是手段不是目的，你需要说明**怎么加、加在哪里、加了之后数据一致性怎么保证、有没有上限**。
 :::
 
+### Q7：如何设计一个反爬虫/人机识别系统？请给出完整的技术方案
+
+**参考答案：**
+
+反爬虫系统的核心挑战在于**在拦截恶意流量的同时，最大限度保障正常用户的访问体验**。一个生产级的反爬虫体系必须是分层、多维度、可动态调整的。
+
+#### 1. 分层防御体系
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│  边缘层（WAF / CDN / Edge）                                  │
+│  ├── IP 信誉库（威胁情报、代理 IP 库、Tor 节点）              │
+│  ├── 简单规则拦截：User-Agent 为空、HTTP 协议异常            │
+│  └── 地理位置异常检测（同一 IP 跨洲秒级切换）                │
+├─────────────────────────────────────────────────────────────┤
+│  网关层（Nginx / Gateway / OpenResty）                       │
+│  ├── 限流：单 IP QPS 阈值、单用户会话阈值                    │
+│  ├── 行为频率检测：同一接口 1s 内 100 次调用                 │
+│  └── 黑名单：Redis 布隆过滤器快速判定                        │
+├─────────────────────────────────────────────────────────────┤
+│  应用层（Java 服务 + 规则引擎）                              │
+│  ├── 行为特征分析（鼠标轨迹、点击热力图、操作间隔）          │
+│  ├── 设备指纹校验（Canvas / WebGL / 字体列表）               │
+│  ├── 验证码挑战（图形 → 滑动 → 无感验证 → 智能风控）        │
+│  └── 风控评分模型（多维度打分 + 动态阈值）                   │
+├─────────────────────────────────────────────────────────────┤
+│  数据层（持久化 + 分析）                                     │
+│  ├── 请求日志落盘（ClickHouse / ES）                         │
+│  ├── 特征库更新（恶意指纹、已知爬虫模式）                    │
+│  └── 模型训练样本沉淀（正负样本标注）                        │
+└─────────────────────────────────────────────────────────────┘
+```
+
+**分层设计的核心思想**：越靠近边缘层，拦截成本越低、对正常用户影响越小；越靠近应用层，识别精度越高、但计算成本也越高。理想情况下，80% 的恶意流量应在边缘层和网关层被过滤，只有 20% 的"疑似流量"进入应用层做深度分析。
+
+#### 2. 人机识别技术详解
+
+**2.1 行为特征分析**
+
+人类操作具有天然的"不规律性"，而自动化工具往往过于规律或过于随机：
+
+| 特征维度 | 正常用户表现 | 爬虫/脚本表现 | 检测手段 |
+|----------|-------------|--------------|----------|
+| 鼠标轨迹 | 曲线移动、有加速/减速、存在抖动 | 直线移动、匀速、无抖动 | 贝塞尔曲线拟合 + 速度方差 |
+| 点击热力图 | 集中在可交互元素上 | 随机分布或过于规律 | 点击坐标与 DOM 元素匹配度 |
+| 操作间隔 | 有思考停顿（几百毫秒到数秒） | 固定间隔或过快（< 50ms） | 时间序列统计分析 |
+| 页面停留时间 | 与内容长度正相关 | 过短（秒开秒关）或过长 | 停留时间分布拟合 |
+| 滚动行为 | 非线性滚动、有回滚 | 匀速滚动到底 | 滚动速度变化率 |
+
+**2.2 设备指纹**
+
+通过前端 JS 采集浏览器/设备的固有特征，生成唯一标识：
+
+```javascript
+// 设备指纹采集示例（前端 JS）
+function collectFingerprint() {
+    const canvas = document.createElement('canvas');
+    const ctx = canvas.getContext('2d');
+    ctx.textBaseline = 'top';
+    ctx.font = '14px Arial';
+    ctx.fillText('Fingerprint test', 2, 2);
+    const canvasHash = hash(canvas.toDataURL());  // Canvas 指纹
+
+    const gl = canvas.getContext('webgl');
+    const vendor = gl.getParameter(gl.VENDOR);     // WebGL 厂商
+    const renderer = gl.getParameter(gl.RENDERER); // 显卡型号
+
+    return {
+        canvasHash,
+        webglVendor: vendor,
+        webglRenderer: renderer,
+        fonts: getInstalledFonts(),        // 已安装字体列表
+        timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+        language: navigator.language,
+        screenResolution: `${screen.width}x${screen.height}`,
+        colorDepth: screen.colorDepth,
+        plugins: Array.from(navigator.plugins).map(p => p.name),
+        userAgent: navigator.userAgent,
+        platform: navigator.platform,
+        touchSupport: 'ontouchstart' in window,
+        deviceMemory: navigator.deviceMemory || 'unknown',
+        hardwareConcurrency: navigator.hardwareConcurrency
+    };
+}
+```
+
+**关键洞察**：设备指纹不是追求 100% 唯一性，而是追求**稳定性**和**区分度**。同一台设备多次访问指纹应基本不变，不同设备指纹应尽可能不同。指纹碰撞率控制在 1/10000 以下即可满足生产需求。
+
+**2.3 验证码体系（渐进式挑战）**
+
+| 层级 | 验证方式 | 用户体验 | 拦截能力 | 适用场景 |
+|------|---------|---------|---------|---------|
+| L1 | 无感验证（行为分析） | 完全无感知 | 拦截 60-70% 机器流量 | 正常用户 |
+| L2 | 滑动验证码 | 轻交互 | 拦截 85% 机器流量 | 疑似流量 |
+| L3 | 图形验证码（点击/输入） | 中等交互 | 拦截 90% 机器流量 | 高风险流量 |
+| L4 | 智能风控（多因子认证） | 强验证（短信/人脸） | 拦截 99%+ | 极高风险 |
+
+**渐进式挑战原则**：不要对所有用户一视同仁。根据风控评分动态选择验证级别，正常用户完全无感知，疑似用户逐步升级挑战难度。
+
+**2.4 请求特征检测**
+
+```
+Header 异常检测清单：
+□ User-Agent 缺失或为默认值（如 Python-requests/2.28）
+□ Referer 缺失或与业务场景不符
+□ Accept 头不符合浏览器标准格式
+□ Cookie 缺失或 Session 未正常建立
+□ HTTP/2 协议缺失（现代浏览器默认支持）
+□ TLS 指纹异常（JA3 指纹与常见浏览器不匹配）
+
+JS 执行环境检测：
+□ 是否支持 WebGL / Canvas
+□ navigator.webdriver 是否为 true（Selenium 标记）
+□ 是否存在 __phantom 或 _selenium 等自动化变量
+□ window.outerWidth / outerHeight 是否为 0（无头浏览器）
+□ Chrome DevTools Protocol 检测
+```
+
+#### 3. 风控评分模型
+
+**3.1 多维度打分体系**
+
+```java
+/**
+ * 风控评分器 —— 多维度加权评分
+ * 总分 100 分，分数越高风险越大
+ */
+public class RiskScorer {
+
+    // 各维度权重（可根据业务动态调整）
+    private static final Map<String, Double> WEIGHTS = Map.of(
+        "ip_reputation", 0.20,      // IP 信誉
+        "behavior_anomaly", 0.25,   // 行为异常
+        "device_fingerprint", 0.20, // 设备指纹
+        "request_pattern", 0.20,    // 请求模式
+        "frequency", 0.15           // 频率特征
+    );
+
+    public RiskScore evaluate(RequestContext ctx) {
+        double totalScore = 0.0;
+        Map<String, Double> dimensionScores = new HashMap<>();
+
+        // 1. IP 信誉评分（0-100）
+        double ipScore = evaluateIpReputation(ctx.getIp());
+        dimensionScores.put("ip_reputation", ipScore);
+        totalScore += ipScore * WEIGHTS.get("ip_reputation");
+
+        // 2. 行为异常评分
+        double behaviorScore = evaluateBehavior(ctx.getBehaviorLog());
+        dimensionScores.put("behavior_anomaly", behaviorScore);
+        totalScore += behaviorScore * WEIGHTS.get("behavior_anomaly");
+
+        // 3. 设备指纹评分
+        double fpScore = evaluateFingerprint(ctx.getFingerprint());
+        dimensionScores.put("device_fingerprint", fpScore);
+        totalScore += fpScore * WEIGHTS.get("device_fingerprint");
+
+        // 4. 请求模式评分
+        double patternScore = evaluateRequestPattern(ctx);
+        dimensionScores.put("request_pattern", patternScore);
+        totalScore += patternScore * WEIGHTS.get("request_pattern");
+
+        // 5. 频率评分
+        double freqScore = evaluateFrequency(ctx.getUserId(), ctx.getIp());
+        dimensionScores.put("frequency", freqScore);
+        totalScore += freqScore * WEIGHTS.get("frequency");
+
+        return new RiskScore(totalScore, dimensionScores);
+    }
+
+    /**
+     * 动态阈值判定 —— 根据业务时段和整体流量调整
+     */
+    public Decision decide(RiskScore score, BusinessContext biz) {
+        double threshold = getDynamicThreshold(biz);
+
+        if (score.getTotal() < threshold * 0.5) {
+            return Decision.ALLOW;           // 放行
+        } else if (score.getTotal() < threshold) {
+            return Decision.CHALLENGE;       // 挑战（验证码）
+        } else if (score.getTotal() < threshold * 1.5) {
+            return Decision.LIMIT;           // 限流
+        } else {
+            return Decision.BLOCK;           // 拦截
+        }
+    }
+
+    private double getDynamicThreshold(BusinessContext biz) {
+        // 根据历史数据动态调整阈值
+        // 例如：大促期间放宽阈值，避免误杀正常用户
+        double baseThreshold = 70.0;
+        if (biz.isPromotionPeriod()) {
+            return baseThreshold * 1.2;      // 大促期间提高阈值
+        }
+        if (biz.getCurrentQps() > biz.getNormalQps() * 3) {
+            return baseThreshold * 1.1;      // 流量高峰微调
+        }
+        return baseThreshold;
+    }
+}
+```
+
+**3.2 评分结果处置策略**
+
+| 总分区间 | 处置动作 | 对用户体验影响 |
+|----------|---------|--------------|
+| 0-35 | 直接放行 | 无感知 |
+| 35-70 | 无感验证（后台采集更多行为数据） | 无感知 |
+| 70-85 | 弹出滑动验证码 | 轻交互 |
+| 85-95 | 弹出图形验证码 + 限制操作频率 | 中等影响 |
+| 95-100 | 拦截请求 + 封禁账号/IP | 强阻断 |
+
+#### 4. 具体实现方案（Java + Redis + 规则引擎）
+
+**4.1 技术架构**
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│                     客户端（Web/App）                        │
+│  ├── 前端 SDK：采集行为数据、设备指纹、发送心跳              │
+│  └── 验证码组件：滑动/图形/无感验证 UI                       │
+├─────────────────────────────────────────────────────────────┤
+│                     Nginx / OpenResty                        │
+│  ├── Lua 脚本：IP 黑名单、频率初筛、UA 检测                  │
+│  └── 共享内存：本地缓存热点 IP 规则                          │
+├─────────────────────────────────────────────────────────────┤
+│              Java 反爬虫服务（Spring Boot）                  │
+│  ├── Controller：接收前端 SDK 上报数据                       │
+│  ├── Service：行为分析、指纹比对、评分计算                   │
+│  ├── RuleEngine：Drools / QLExpress 规则执行               │
+│  └── Scheduler：定时更新规则、模型重训练                   │
+├─────────────────────────────────────────────────────────────┤
+│                     数据层                                   │
+│  ├── Redis：频率计数、IP 黑名单、Session 状态                │
+│  ├── MySQL：规则配置、用户风险等级、申诉记录                 │
+│  ├── ClickHouse：行为日志、审计日志、特征分析                │
+│  └── ES：设备指纹索引、相似指纹检索                          │
+└─────────────────────────────────────────────────────────────┘
+```
+
+**4.2 规则引擎配置（Drools 示例）**
+
+```java
+// drl 规则文件：anti-crawler-rules.drl
+package com.antibot.rules
+
+import com.antibot.model.RequestContext
+import com.antibot.model.RiskScore
+import com.antibot.model.Decision
+
+rule "High frequency from same IP"
+    when
+        $ctx : RequestContext(ipRequestCountIn1Min > 1000)
+    then
+        $ctx.addRiskScore("frequency", 40.0);
+        System.out.println("IP " + $ctx.getIp() + " 1分钟内请求超过1000次");
+end
+
+rule "Missing critical headers"
+    when
+        $ctx : RequestContext(userAgent == null || cookie == null)
+    then
+        $ctx.addRiskScore("request_pattern", 30.0);
+end
+
+rule "Selenium detected"
+    when
+        $ctx : RequestContext(navigatorWebdriver == true)
+    then
+        $ctx.addRiskScore("device_fingerprint", 50.0);
+        $ctx.setDecision(Decision.BLOCK);
+end
+
+rule "Abnormal mouse trajectory"
+    when
+        $ctx : RequestContext(mouseTrajectoryScore < 0.3)
+    then
+        $ctx.addRiskScore("behavior_anomaly", 35.0);
+end
+```
+
+**4.3 频率控制（Redis + Lua）**
+
+```java
+@Service
+public class FrequencyLimiter {
+
+    @Autowired
+    private StringRedisTemplate redisTemplate;
+
+    private static final String LUA_SCRIPT = """
+        local key = KEYS[1]
+        local window = tonumber(ARGV[1])
+        local limit = tonumber(ARGV[2])
+        local now = tonumber(ARGV[3])
+        
+        redis.call('ZREMRANGEBYSCORE', key, 0, now - window)
+        local count = redis.call('ZCARD', key)
+        
+        if count < limit then
+            redis.call('ZADD', key, now, now .. ':' .. ARGV[4])
+            redis.call('EXPIRE', key, math.ceil(window / 1000))
+            return 1
+        else
+            return 0
+        end
+        """;
+
+    /**
+     * 滑动窗口限流 —— 精确控制单位时间内的请求次数
+     */
+    public boolean tryAcquire(String key, int limit, long windowMillis) {
+        DefaultRedisScript<Long> script = new DefaultRedisScript<>();
+        script.setScriptText(LUA_SCRIPT);
+        script.setResultType(Long.class);
+
+        long now = System.currentTimeMillis();
+        String uniqueId = UUID.randomUUID().toString();
+
+        Long result = redisTemplate.execute(
+            script,
+            Collections.singletonList("freq:" + key),
+            String.valueOf(windowMillis),
+            String.valueOf(limit),
+            String.valueOf(now),
+            uniqueId
+        );
+
+        return result != null && result == 1;
+    }
+}
+```
+
+#### 5. 与正常用户的平衡
+
+**5.1 误杀率控制**
+
+| 措施 | 说明 |
+|------|------|
+| 灰度策略 | 新规则上线先对 1% 流量生效，观察 24h 误杀率 |
+| 白名单机制 | 已登录用户、VIP 用户、历史行为良好的用户降低权重 |
+| 多因子交叉验证 | 不依赖单一维度判定，必须 2 个以上维度同时异常才拦截 |
+| A/B 测试 | 对比实验组和对照组的转化率、留存率，量化误杀影响 |
+
+**5.2 申诉与反馈机制**
+
+```
+用户被误拦截后的处理流程：
+1. 前端展示友好提示："操作过于频繁，请稍后再试或验证身份"
+2. 提供多种验证方式：短信验证、邮箱验证、人工客服
+3. 验证通过后，将该用户加入 24h 白名单
+4. 申诉记录入库，用于规则优化和模型训练
+5. 每周统计误拦截率，超过 0.1% 触发规则回滚或阈值调整
+```
+
+**5.3 关键指标监控**
+
+| 指标 | 目标值 | 告警阈值 |
+|------|--------|---------|
+| 误杀率（正常用户被拦截比例） | < 0.05% | > 0.1% |
+| 拦截率（总流量中被拦截比例） | 5-15% | > 30% |
+| 验证码通过率 | > 90% | < 70% |
+| 规则生效延迟 | < 1s | > 5s |
+| 评分计算耗时 | < 50ms | > 100ms |
+
+#### 6. Java 伪代码：行为分析评分器
+
+```java
+/**
+ * 行为分析评分器 —— 核心组件
+ * 分析用户操作序列，计算行为异常分数（0-100）
+ */
+@Component
+public class BehaviorAnalyzer {
+
+    @Autowired
+    private RedisTemplate<String, String> redisTemplate;
+
+    /**
+     * 分析鼠标轨迹的"人类度"
+     * 核心算法：计算轨迹的曲率变化、速度方差、加速度分布
+     */
+    public double analyzeMouseTrajectory(List<Point> trajectory) {
+        if (trajectory == null || trajectory.size() < 3) {
+            return 80.0; // 无轨迹或轨迹过短，高度可疑
+        }
+
+        // 1. 计算速度序列
+        List<Double> velocities = new ArrayList<>();
+        for (int i = 1; i < trajectory.size(); i++) {
+            Point p1 = trajectory.get(i - 1);
+            Point p2 = trajectory.get(i);
+            double distance = Math.hypot(p2.x - p1.x, p2.y - p1.y);
+            double timeDelta = p2.timestamp - p1.timestamp;
+            if (timeDelta > 0) {
+                velocities.add(distance / timeDelta);
+            }
+        }
+
+        // 2. 计算速度方差 —— 人类操作速度不均匀，方差较大
+        double meanVelocity = velocities.stream()
+            .mapToDouble(Double::doubleValue)
+            .average()
+            .orElse(0);
+        double variance = velocities.stream()
+            .mapToDouble(v -> Math.pow(v - meanVelocity, 2))
+            .average()
+            .orElse(0);
+
+        // 3. 计算曲率变化 —— 人类轨迹有自然的弯曲
+        double curvatureScore = calculateCurvatureScore(trajectory);
+
+        // 4. 综合评分：方差过低（匀速）或曲率过于规则 = 机器行为
+        double anomalyScore = 0.0;
+        if (variance < 0.5) {
+            anomalyScore += 30; // 速度过于均匀
+        }
+        if (curvatureScore < 0.2) {
+            anomalyScore += 25; // 轨迹过于直线
+        }
+        if (trajectory.size() < 10 && meanVelocity > 500) {
+            anomalyScore += 20; // 点少但速度快 = 瞬移
+        }
+
+        return Math.min(anomalyScore, 100.0);
+    }
+
+    /**
+     * 分析操作间隔分布
+     * 人类操作间隔服从对数正态分布，机器往往固定间隔
+     */
+    public double analyzeClickInterval(List<Long> intervals) {
+        if (intervals == null || intervals.size() < 5) {
+            return 50.0;
+        }
+
+        // 计算间隔的标准差和变异系数（CV）
+        double mean = intervals.stream().mapToLong(Long::longValue).average().orElse(0);
+        double variance = intervals.stream()
+            .mapToDouble(i -> Math.pow(i - mean, 2))
+            .average()
+            .orElse(0);
+        double stdDev = Math.sqrt(variance);
+        double cv = mean > 0 ? stdDev / mean : 0;
+
+        // 人类操作的 CV 通常在 0.3-1.5 之间
+        // 机器的 CV 往往接近 0（固定间隔）或异常大
+        if (cv < 0.1) {
+            return 70.0; // 间隔过于规律
+        } else if (cv > 0.2 && cv < 1.5) {
+            return 10.0; // 正常人类范围
+        } else {
+            return 40.0; // 异常不规律
+        }
+    }
+
+    /**
+     * 计算页面停留时间的合理性
+     */
+    public double analyzeDwellTime(long dwellTimeMs, int contentLength) {
+        // 预估阅读时间：每字约 200ms 阅读时间
+        long expectedMinTime = contentLength * 200L;
+
+        if (dwellTimeMs < expectedMinTime * 0.1) {
+            return 60.0; // 停留时间远小于阅读所需时间
+        } else if (dwellTimeMs < expectedMinTime * 0.3) {
+            return 30.0; // 略短，可疑
+        } else if (dwellTimeMs > expectedMinTime * 5) {
+            return 20.0; // 过长，可能挂机
+        }
+        return 5.0; // 正常范围
+    }
+
+    /**
+     * 主入口：综合行为评分
+     */
+    public BehaviorScore analyze(RequestContext ctx) {
+        double trajectoryScore = analyzeMouseTrajectory(ctx.getMouseTrajectory());
+        double intervalScore = analyzeClickInterval(ctx.getClickIntervals());
+        double dwellScore = analyzeDwellTime(ctx.getDwellTime(), ctx.getPageContentLength());
+
+        // 加权综合
+        double total = trajectoryScore * 0.4
+                     + intervalScore * 0.35
+                     + dwellScore * 0.25;
+
+        return new BehaviorScore(total, trajectoryScore, intervalScore, dwellScore);
+    }
+
+    private double calculateCurvatureScore(List<Point> trajectory) {
+        // 简化版：计算相邻三点形成的角度变化
+        // 实际生产环境可用贝塞尔曲线拟合
+        double totalCurvature = 0;
+        int count = 0;
+        for (int i = 1; i < trajectory.size() - 1; i++) {
+            Point a = trajectory.get(i - 1);
+            Point b = trajectory.get(i);
+            Point c = trajectory.get(i + 1);
+            double curvature = computeCurvature(a, b, c);
+            totalCurvature += curvature;
+            count++;
+        }
+        return count > 0 ? totalCurvature / count : 0;
+    }
+
+    private double computeCurvature(Point a, Point b, Point c) {
+        double ab = Math.hypot(b.x - a.x, b.y - a.y);
+        double bc = Math.hypot(c.x - b.x, c.y - b.y);
+        double ac = Math.hypot(c.x - a.x, c.y - a.y);
+        if (ab * bc == 0) return 0;
+        // 使用余弦定理计算夹角
+        double cosAngle = (ab * ab + bc * bc - ac * ac) / (2 * ab * bc);
+        cosAngle = Math.max(-1, Math.min(1, cosAngle));
+        return Math.PI - Math.acos(cosAngle); // 返回转角弧度
+    }
+
+    @Data
+    @AllArgsConstructor
+    public static class BehaviorScore {
+        private double total;
+        private double trajectory;
+        private double interval;
+        private double dwell;
+    }
+
+    @Data
+    public static class Point {
+        private double x;
+        private double y;
+        private long timestamp;
+    }
+}
+```
+
+::: tip 面试加分点
+1. **强调分层防御的必要性**：单层防护容易被绕过，多层叠加才能形成有效防御
+2. **突出用户体验平衡**：反爬虫不是"宁可错杀一千"，误杀率必须量化控制
+3. **展示数据驱动思维**：规则不是拍脑袋定的，而是通过 A/B 测试和数据分析持续优化
+4. **提及对抗升级**：爬虫会不断进化（如模拟鼠标轨迹、使用真实浏览器），反爬虫系统需要持续迭代
+:::
+
+---
+
 ## 六、延伸阅读与联动
 
 系统设计面试与以下模块高度相关，建议在准备时交叉学习：
