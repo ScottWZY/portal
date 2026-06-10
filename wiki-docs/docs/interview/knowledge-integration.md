@@ -85,7 +85,7 @@ flowchart TD
     B -->|异步削峰| D[MQ 消息队列]
     D --> E[消费者处理]
     E --> C
-    C --> F[Binlog 监听<br/>Canal/Debezium]
+    C --> F[Binlog 监听\nCanal/Debezium]
     F --> G[Redis 缓存更新]
     F --> H[ES 索引同步]
     G --> I[缓存一致性校验]
@@ -150,7 +150,7 @@ flowchart LR
 
 ```mermaid
 flowchart LR
-    A[代码提交 Git] --> B[CI 持续集成<br/>Jenkins/GitHub Actions]
+    A[代码提交 Git] --> B[CI 持续集成\nJenkins/GitHub Actions]
     B --> C[编译 + 单元测试]
     C --> D[Docker 镜像构建]
     D --> E[Harbor 镜像仓库]
@@ -490,13 +490,13 @@ synchronized (Java 关键字)
 
 | 现象 | 可能原因 | 确认手段 | 解决方案 |
 |------|---------|---------|---------|
-| `OutOfMemoryError: Java heap space` | 堆内存不足、内存泄漏、大对象分配 | `jmap -dump:format=b,file=...` + MAT 分析 | 增大 `-Xmx`、修复泄漏、分批处理 |
-| `OutOfMemoryError: Metaspace` | 类加载过多（动态代理、反射）、类卸载失败 | `jstat -gcmetacapacity`、MAT 类加载器分析 | 增大 `-XX:MaxMetaspaceSize`、检查动态类生成 |
-| `OutOfMemoryError: Direct buffer memory` | NIO 直接内存泄漏（Netty、文件通道未释放） | `-XX:MaxDirectMemorySize`、堆外内存监控 | 手动释放 `ByteBuffer`、检查 Netty 引用计数 |
-| `unable to create new native thread` | 线程数超过系统限制（`ulimit -u`） | `jstack` 查看线程数、`ulimit -a` | 降低线程池大小、增大系统限制 |
-| Full GC 频繁 / STW 过长 | 老年代空间不足、内存泄漏、大对象晋升 | `jstat -gcutil`、GC 日志分析 | 调优 GC 算法（G1/ZGC）、增大堆内存 |
-| 线程死锁 | 锁顺序不一致、嵌套锁、数据库行锁 | `jstack -l` 找 `Found one Java-level deadlock` | 统一加锁顺序、使用 `tryLock` 超时 |
-| 线程阻塞 | IO 等待、数据库连接池耗尽、第三方超时 | `jstack` 找 `BLOCKED` / `TIMED_WAITING` | 设置超时、扩容连接池、异步化 |
+| OutOfMemoryError: Java heap space | 堆内存不足、内存泄漏、大对象分配 | jmap 导出 dump + MAT 分析 | 增大 -Xmx、修复泄漏、分批处理 |
+| OutOfMemoryError: Metaspace | 类加载过多（动态代理、反射）、类卸载失败 | jstat -gcmetacapacity、MAT 类加载器分析 | 增大 MaxMetaspaceSize、检查动态类生成 |
+| OutOfMemoryError: Direct buffer memory | NIO 直接内存泄漏（Netty、文件通道未释放） | MaxDirectMemorySize 配置、堆外内存监控 | 手动释放 ByteBuffer、检查 Netty 引用计数 |
+| unable to create new native thread | 线程数超过系统限制（ulimit -u） | jstack 查看线程数、ulimit -a | 降低线程池大小、增大系统限制 |
+| Full GC 频繁 / STW 过长 | 老年代空间不足、内存泄漏、大对象晋升 | jstat -gcutil、GC 日志分析 | 调优 GC 算法（G1/ZGC）、增大堆内存 |
+| 线程死锁 | 锁顺序不一致、嵌套锁、数据库行锁 | jstack -l 找 deadlock | 统一加锁顺序、使用 tryLock 超时 |
+| 线程阻塞 | IO 等待、数据库连接池耗尽、第三方超时 | jstack 找 BLOCKED / TIMED_WAITING | 设置超时、扩容连接池、异步化 |
 
 **JVM 排查核心命令速查：**
 
@@ -505,19 +505,19 @@ synchronized (Java 关键字)
 jps -lvm
 
 # 2. 查看 GC 情况（每 1s 输出一次，共 10 次）
-jstat -gcutil <pid> 1000 10
+jstat -gcutil [pid] 1000 10
 
-# 3. 导出堆转储文件（OOM 时自动导出：-XX:+HeapDumpOnOutOfMemoryError）
-jmap -dump:format=b,file=heap.hprof <pid>
+# 3. 导出堆转储文件（OOM 时自动导出）
+jmap -dump:format=b,file=heap.hprof [pid]
 
 # 4. 查看堆中对象统计
-jmap -histo <pid> | head -n 30
+jmap -histo [pid] | head -n 30
 
 # 5. 打印线程栈（找死锁、阻塞）
-jstack -l <pid> > thread_dump.txt
+jstack -l [pid] > thread_dump.txt
 
 # 6. 查看 JVM 参数
-jinfo -flags <pid>
+jinfo -flags [pid]
 
 # 7. 内存分析工具 MAT 关键视图
 # - Dominator Tree：找大对象和内存泄漏嫌疑
@@ -530,49 +530,49 @@ jinfo -flags <pid>
 
 | 现象 | 可能原因 | 确认手段 | 解决方案 |
 |------|---------|---------|---------|
-| CPU 100% | 死循环、频繁 GC、正则回溯、复杂计算 | `top` → `top -Hp <pid>` → `jstack` 找对应线程 | 修复死循环、优化算法、限流 |
-| 内存泄漏（RSS 持续增长） | 堆外内存泄漏、Native 内存泄漏、缓存无限增长 | `pmap -x <pid>`、`/proc/<pid>/smaps` | 检查堆外内存使用、限制缓存大小 |
-| 磁盘 IO 打满 | 日志写入过快、数据库刷盘、临时文件堆积 | `iostat -x 1`、`df -h`、`lsof` | 日志异步化、清理临时文件、SSD 升级 |
-| `Too many open files` | 文件句柄泄漏（流/连接未关闭）、并发过高 | `lsof -p <pid> | wc -l`、`ulimit -n` | 确保 `close()` 在 finally 中、增大 `ulimit` |
-| 网络连接数耗尽 | TCP TIME_WAIT 堆积、连接未释放、DDoS | `netstat -anp | grep ESTABLISHED | wc -l`、`ss -s` | 开启 `tcp_tw_reuse`、连接池管理、限流 |
-| 系统负载高但 CPU 不高 | IO 等待、大量不可中断睡眠进程 | `vmstat 1`、`iostat -x 1` | 优化 IO、异步化、加 SSD |
+| CPU 100% | 死循环、频繁 GC、正则回溯、复杂计算 | top → top -Hp [pid] → jstack 找对应线程 | 修复死循环、优化算法、限流 |
+| 内存泄漏（RSS 持续增长） | 堆外内存泄漏、Native 内存泄漏、缓存无限增长 | pmap -x [pid]、/proc/[pid]/smaps | 检查堆外内存使用、限制缓存大小 |
+| 磁盘 IO 打满 | 日志写入过快、数据库刷盘、临时文件堆积 | iostat -x 1、df -h、lsof | 日志异步化、清理临时文件、SSD 升级 |
+| Too many open files | 文件句柄泄漏（流/连接未关闭）、并发过高 | lsof -p [pid] | wc -l、ulimit -n | 确保 close() 在 finally 中、增大 ulimit |
+| 网络连接数耗尽 | TCP TIME_WAIT 堆积、连接未释放、DDoS | netstat 统计、ss -s | 开启 tcp_tw_reuse、连接池管理、限流 |
+| 系统负载高但 CPU 不高 | IO 等待、大量不可中断睡眠进程 | vmstat 1、iostat -x 1 | 优化 IO、异步化、加 SSD |
 
 **系统排查核心命令速查：**
 
 ```bash
 # CPU 分析
-top -Hp <pid>                    # 找到占用 CPU 高的线程
-printf "%x\n" <tid>              # 线程 ID 转十六进制
-jstack <pid> | grep <hex_tid>    # 定位具体线程栈
+top -Hp [pid]                    # 找到占用 CPU 高的线程
+printf "%x\n" [tid]              # 线程 ID 转十六进制
+jstack [pid] | grep [hex_tid]    # 定位具体线程栈
 
 # 内存分析
 free -h                          # 系统内存概况
 vmstat 1 10                      # 内存、swap、IO 统计
-pmap -x <pid> | sort -k3 -n      # 进程内存映射，找大段内存
+pmap -x [pid] | sort -k3 -n      # 进程内存映射，找大段内存
 
 # IO 分析
 iostat -x 1 10                   # 磁盘 IO 详细统计
-iotop -p <pid>                   # 进程级 IO 监控
+iotop -p [pid]                   # 进程级 IO 监控
 
 # 网络分析
-netstat -anp | grep <port>       # 端口连接情况
+netstat -anp | grep [port]       # 端口连接情况
 ss -s                            # socket 统计摘要
-strace -p <pid> -e trace=network # 追踪系统调用（网络）
+strace -p [pid] -e trace=network # 追踪系统调用（网络）
 
 # 文件句柄
-lsof -p <pid> | wc -l            # 进程打开文件数
-lsof -p <pid> | grep REG | wc -l # 普通文件数
-lsof -p <pid> | grep TCP | wc -l # TCP 连接数
+lsof -p [pid] | wc -l            # 进程打开文件数
+lsof -p [pid] | grep REG | wc -l # 普通文件数
+lsof -p [pid] | grep TCP | wc -l # TCP 连接数
 ```
 
 **2.3 应用层面**
 
 | 现象 | 可能原因 | 确认手段 | 解决方案 |
 |------|---------|---------|---------|
-| 线程池耗尽 | 任务堆积、线程泄漏、核心线程数设置过小 | `jstack` 看线程状态、线程池监控 | 调大线程池、任务降级、异步解耦 |
+| 线程池耗尽 | 任务堆积、线程泄漏、核心线程数设置过小 | jstack 看线程状态、线程池监控 | 调大线程池、任务降级、异步解耦 |
 | 数据库连接池耗尽 | 慢 SQL、连接未释放、连接池大小不足 | 连接池监控（Druid/HikariCP）、慢查询日志 | 优化 SQL、设置连接超时、扩容连接池 |
 | 第三方服务超时雪崩 | 下游超时未熔断、重试风暴、级联故障 | 链路追踪（SkyWalking）、超时日志 | 熔断降级（Sentinel）、超时设置、隔离线程池 |
-| 代码死循环 | 循环条件错误、递归无终止、无限轮询 | `jstack` 找 RUNNABLE 线程、代码审查 | 修复循环条件、增加循环上限 |
+| 代码死循环 | 循环条件错误、递归无终止、无限轮询 | jstack 找 RUNNABLE 线程、代码审查 | 修复循环条件、增加循环上限 |
 | 缓存穿透导致 DB 打挂 | 大量不存在的 key 查询直达 DB | Redis 监控、DB QPS 监控 | 布隆过滤器、空值缓存、接口限流 |
 | 大对象序列化导致 OOM | 返回列表过大、JSON 序列化内存爆炸 | 接口返回大小监控 | 分页查询、流式返回、限制返回条数 |
 
@@ -580,11 +580,11 @@ lsof -p <pid> | grep TCP | wc -l # TCP 连接数
 
 | 现象 | 可能原因 | 确认手段 | 解决方案 |
 |------|---------|---------|---------|
-| Pod 频繁重启 | OOMKilled（内存超限）、Liveness 探针失败、启动崩溃 | `kubectl describe pod`、`kubectl logs --previous` | 调整 Limit/Request、修复启动逻辑 |
-| 健康检查失败 | 接口响应慢、依赖服务未就绪、健康接口本身有问题 | `kubectl get events`、`curl 健康接口` | 优化健康接口、增加启动探针 |
-| 资源限制不合理 | Limit 设置过低导致 OOM、Request 设置过高导致调度浪费 | `kubectl top pod`、`metrics-server` | 基于实际用量调整 Limit/Request |
+| Pod 频繁重启 | OOMKilled（内存超限）、Liveness 探针失败、启动崩溃 | kubectl describe pod、kubectl logs --previous | 调整 Limit/Request、修复启动逻辑 |
+| 健康检查失败 | 接口响应慢、依赖服务未就绪、健康接口本身有问题 | kubectl get events、curl 健康接口 | 优化健康接口、增加启动探针 |
+| 资源限制不合理 | Limit 设置过低导致 OOM、Request 设置过高导致调度浪费 | kubectl top pod、metrics-server | 基于实际用量调整 Limit/Request |
 | HPA 频繁扩缩容 | 阈值设置过敏感、流量波动大 | HPA 事件、扩缩容历史 | 调整稳定窗口、使用自定义指标 |
-| 节点 NotReady | 节点资源耗尽、Kubelet 异常、网络分区 | `kubectl get nodes`、`journalctl -u kubelet` | 驱逐 Pod、重启节点、排查网络 |
+| 节点 NotReady | 节点资源耗尽、Kubelet 异常、网络分区 | kubectl get nodes、journalctl -u kubelet | 驱逐 Pod、重启节点、排查网络 |
 
 #### 三、工具链详解
 
@@ -592,17 +592,17 @@ lsof -p <pid> | grep TCP | wc -l # TCP 连接数
 
 | 工具 | 用途 | 关键查询示例 |
 |------|------|-------------|
-| **ELK**（Elasticsearch + Logstash + Kibana） | 日志采集、存储、检索、可视化 | `level:ERROR AND service:order-service AND @timestamp:[now-1h TO now]` |
-| **Loki**（Grafana 生态） | 轻量级日志聚合，与 Prometheus 联动 | `{app="order-service"} |= "OutOfMemoryError"` |
-| **Splunk** | 企业级日志分析，强大的 SPL 查询语言 | `index=prod sourcetype=java ERROR "heap space"` |
+| ELK（Elasticsearch + Logstash + Kibana） | 日志采集、存储、检索、可视化 | level:ERROR AND service:order-service |
+| Loki（Grafana 生态） | 轻量级日志聚合，与 Prometheus 联动 | {app="order-service"} |= "OutOfMemoryError" |
+| Splunk | 企业级日志分析，强大的 SPL 查询语言 | index=prod sourcetype=java ERROR "heap space" |
 
 **3.2 监控系统**
 
 | 工具 | 核心能力 | 面试要点 |
 |------|---------|---------|
-| **Prometheus + Grafana** | 时序数据采集 + 可视化仪表盘 | 四类黄金指标（延迟/流量/错误/饱和度）、告警规则配置、Exporter 原理 |
-| **SkyWalking** | 分布式链路追踪 + APM | TraceId 透传、Span 分析、拓扑图、慢调用定位 |
-| **Arthas**（阿里开源） | Java 诊断神器，无需重启 | `trace` 方法耗时、`watch` 方法入参返回值、`thread` 线程分析、`heapdump` 导出堆 |
+| Prometheus + Grafana | 时序数据采集 + 可视化仪表盘 | 四类黄金指标（延迟/流量/错误/饱和度）、告警规则配置、Exporter 原理 |
+| SkyWalking | 分布式链路追踪 + APM | TraceId 透传、Span 分析、拓扑图、慢调用定位 |
+| Arthas（阿里开源） | Java 诊断神器，无需重启 | trace 方法耗时、watch 方法入参返回值、thread 线程分析、heapdump 导出堆 |
 
 **Arthas 常用命令速查：**
 
@@ -612,11 +612,11 @@ java -jar arthas-boot.jar
 
 #  1. 查看线程信息（找 CPU 占用高的线程）
 thread -n 5                    # 显示 CPU 占用前 5 的线程
-thread <tid>                   # 查看指定线程栈
+thread [tid]                   # 查看指定线程栈
 thread -b                      # 找死锁线程
 
 #  2. 方法级性能分析
-trace com.example.Service getOrder '#cost>100' -n 5    # 追踪耗时 >100ms 的调用
+trace com.example.Service getOrder '#cost>100' -n 5    # 追踪耗时大于100ms 的调用
 watch com.example.Service getOrder '{params,returnObj,throwExp}' -x 2   # 观察入参和返回值
 
 #  3. 内存分析
@@ -631,14 +631,14 @@ profiler stop --format html     # 生成火焰图
 
 | 工具 | 用途 | 使用场景 |
 |------|------|---------|
-| `jps` | 查看 Java 进程 | 快速定位进程 ID |
-| `jstat` | GC 统计、类加载统计 | 监控 GC 频率和内存变化 |
-| `jmap` | 堆 dump、堆直方图 | OOM 时分析大对象 |
-| `jstack` | 线程栈打印 | 死锁、线程阻塞分析 |
-| `jinfo` | 查看/修改 JVM 参数 | 运行时参数确认 |
-| **MAT** | 堆文件可视化分析 | 内存泄漏定位、大对象分析 |
-| **JProfiler** | 商业级性能分析 | CPU/内存/线程/IO 全方位分析 |
-| **GCViewer** | GC 日志可视化 | GC 频率、停顿时间趋势 |
+| jps | 查看 Java 进程 | 快速定位进程 ID |
+| jstat | GC 统计、类加载统计 | 监控 GC 频率和内存变化 |
+| jmap | 堆 dump、堆直方图 | OOM 时分析大对象 |
+| jstack | 线程栈打印 | 死锁、线程阻塞分析 |
+| jinfo | 查看/修改 JVM 参数 | 运行时参数确认 |
+| MAT | 堆文件可视化分析 | 内存泄漏定位、大对象分析 |
+| JProfiler | 商业级性能分析 | CPU/内存/线程/IO 全方位分析 |
+| GCViewer | GC 日志可视化 | GC 频率、停顿时间趋势 |
 
 #### 四、完整排查案例
 
@@ -650,8 +650,8 @@ profiler stop --format html     # 生成火焰图
 Step 1: 现场保护
 ├── 时间：2024-01-15 02:03 ~ 02:17，共崩溃 4 次
 ├── 保留 Pod 日志：kubectl logs order-service-xxx --previous
-├── 保留堆 dump（配置了 -XX:+HeapDumpOnOutOfMemoryError）
-└── 保留 GC 日志：-Xlog:gc*:file=/logs/gc.log
+├── 保留堆 dump（配置了 HeapDumpOnOutOfMemoryError）
+└── 保留 GC 日志
 
 Step 2: 日志分析
 ├── 应用日志发现：java.lang.OutOfMemoryError: Java heap space
@@ -670,7 +670,7 @@ Step 4: 根因确认
 ├── MAT 分析 Dominator Tree：
 │   └── 大对象来源：batchExport() 方法一次性查询了 30 天订单数据
 │   └── 数据量：约 200 万条记录，序列化后 JSON 字符串约 1.2GB
-│   └── 内存泄漏根因：List<Order> 持有大量对象，GC 无法回收
+│   └── 内存泄漏根因：List 持有大量对象，GC 无法回收
 └── 代码审查确认：
     └── 夜间定时任务调用 batchExport() 导出全量订单
     └── 方法内未做分页，一次性加载全部数据到内存
@@ -681,7 +681,7 @@ Step 5: 修复验证
 │   ├── 代码：batchExport() 改为分页查询（每页 1000 条），流式写入文件
 │   ├── 配置：-Xmx 从 2G 调整到 4G（临时缓冲）
 │   └── 架构：批处理任务迁移到独立服务，与在线服务隔离
-├── 灰度发布：先在预发环境用 100 万数据验证，内存峰值 < 800MB
+├── 灰度发布：先在预发环境用 100 万数据验证，内存峰值低于 800MB
 ├── 上线观察：连续 3 天凌晨监控，堆内存稳定在 40-60%，无 Full GC
 └── 复盘文档：
     ├── 根因：大查询未分页 + 批处理与在线服务混部
@@ -699,17 +699,17 @@ Step 5: 修复验证
 
 | 措施 | 实现方式 | 目标 |
 |------|---------|------|
-| **监控告警** | Prometheus 告警规则 + AlertManager + 企业微信/钉钉 | 异常提前发现，而非用户投诉后才知 |
-| **限流降级** | Sentinel 网关限流 + 服务级熔断 + 兜底逻辑 | 防止流量突增打垮系统 |
-| **优雅关闭** | K8s `preStop` Hook + 线程池 `shutdown()` + 请求等待 | 发布时正在处理的请求不中断 |
-| **健康检查** | Liveness（存活）+ Readiness（就绪）+ Startup（启动）探针 | 异常实例自动摘除，流量不路由到故障节点 |
-| **混沌工程** | Chaos Mesh 模拟 Pod 故障、网络延迟、CPU 满载 | 提前发现系统脆弱点，验证容灾能力 |
-| **容量规划** | 定期压测（全链路/单链路）、容量模型推算 | 知道系统极限在哪里，提前扩容 |
-| **变更管控** | 上线 Checklist、灰度发布、一键回滚 | 降低变更引入故障的概率 |
+| 监控告警 | Prometheus 告警规则 + AlertManager + 企业微信/钉钉 | 异常提前发现，而非用户投诉后才知 |
+| 限流降级 | Sentinel 网关限流 + 服务级熔断 + 兜底逻辑 | 防止流量突增打垮系统 |
+| 优雅关闭 | K8s preStop Hook + 线程池 shutdown() + 请求等待 | 发布时正在处理的请求不中断 |
+| 健康检查 | Liveness（存活）+ Readiness（就绪）+ Startup（启动）探针 | 异常实例自动摘除，流量不路由到故障节点 |
+| 混沌工程 | Chaos Mesh 模拟 Pod 故障、网络延迟、CPU 满载 | 提前发现系统脆弱点，验证容灾能力 |
+| 容量规划 | 定期压测（全链路/单链路）、容量模型推算 | 知道系统极限在哪里，提前扩容 |
+| 变更管控 | 上线 Checklist、灰度发布、一键回滚 | 降低变更引入故障的概率 |
 
 **面试话术建议：**
 
-> "遇到服务崩溃，我的排查思路是**先保护现场，再分层定位**。首先看日志确认错误类型——如果是 OOM，用 `jmap` 导出堆文件，MAT 分析大对象；如果是 CPU 100%，用 `top -Hp` 找高 CPU 线程，转十六进制后在 `jstack` 里定位具体代码；如果是线程阻塞，看 `jstack` 里的 `BLOCKED` 状态，结合链路追踪找下游超时。最后一定要复盘，把单点故障变成体系化预防。"
+> "遇到服务崩溃，我的排查思路是**先保护现场，再分层定位**。首先看日志确认错误类型——如果是 OOM，用 jmap 导出堆文件，MAT 分析大对象；如果是 CPU 100%，用 top -Hp 找高 CPU 线程，转十六进制后在 jstack 里定位具体代码；如果是线程阻塞，看 jstack 里的 BLOCKED 状态，结合链路追踪找下游超时。最后一定要复盘，把单点故障变成体系化预防。"
 
 ::: tip 面试加分点
 1. **强调分层排查**：从 JVM → 系统 → 应用 → 部署，层层递进，不遗漏
