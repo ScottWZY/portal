@@ -251,6 +251,28 @@ const sidebar = {
       ]
     },
   ],
+  '/ai-product-manager/': [
+    { text: 'AI 产品经理', link: '/ai-product-manager/' },
+    {
+      text: '核心模块',
+      collapsed: false,
+      items: [
+        { text: '角色定位与三大方向', link: '/ai-product-manager/role-overview' },
+        { text: 'AI 技术基础', link: '/ai-product-manager/tech-basics' },
+        { text: 'AI 产品设计', link: '/ai-product-manager/product-design' },
+        { text: '数据与模型管理', link: '/ai-product-manager/data-model-management' },
+        { text: 'Prompt 工程', link: '/ai-product-manager/prompt-engineering' },
+        { text: '大模型与 Agent', link: '/ai-product-manager/large-model' },
+        { text: '商业落地与策略', link: '/ai-product-manager/business-commercialization' },
+        { text: '伦理合规与治理', link: '/ai-product-manager/ethics-compliance' },
+        { text: 'AI 评估体系 ✨', link: '/ai-product-manager/evaluation' },
+        { text: '工具链与工作流 ✨', link: '/ai-product-manager/tools-and-workflow' },
+        { text: '实战案例：智能客服 ✨', link: '/ai-product-manager/case-study' },
+        { text: '产品拆解与前沿 ✨', link: '/ai-product-manager/product-teardown' },
+        { text: '面试高频题 (33+)', link: '/ai-product-manager/interview' },
+      ]
+    },
+  ],
   '/high-concurrency/': [
     { text: '高并发架构', link: '/high-concurrency/' },
     {
@@ -1032,6 +1054,7 @@ export default withMermaid({
         text: 'AI 与算法',
         items: [
           { text: 'AI 应用', link: '/ai-application/' },
+          { text: 'AI 产品经理', link: '/ai-product-manager/' },
           { text: '算法专题', link: '/algorithm-topics/' },
         ]
       },
